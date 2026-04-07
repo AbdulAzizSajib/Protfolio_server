@@ -46,8 +46,42 @@ const getProjectById = async (id: string) => {
   return project;
 };
 
-const createProject = async (payload: Record<string, unknown>) => prisma.project.create({ data: payload as never });
-const updateProject = async (id: string, payload: Record<string, unknown>) => prisma.project.update({ where: { id }, data: payload as never });
+const createProject = async (payload: Record<string, unknown>) => {
+  const slug = typeof payload.slug === "string" ? payload.slug : undefined;
+
+  if (slug) {
+    const existingProject = await prisma.project.findUnique({
+      where: { slug },
+      select: { id: true },
+    });
+
+    if (existingProject) {
+      throw new AppError(status.CONFLICT, "Project slug already exists. Please use a different slug.");
+    }
+  }
+
+  return prisma.project.create({ data: payload as never });
+};
+
+const updateProject = async (id: string, payload: Record<string, unknown>) => {
+  const slug = typeof payload.slug === "string" ? payload.slug : undefined;
+
+  if (slug) {
+    const existingProject = await prisma.project.findFirst({
+      where: {
+        slug,
+        NOT: { id },
+      },
+      select: { id: true },
+    });
+
+    if (existingProject) {
+      throw new AppError(status.CONFLICT, "Project slug already exists. Please use a different slug.");
+    }
+  }
+
+  return prisma.project.update({ where: { id }, data: payload as never });
+};
 const deleteProject = async (id: string) => prisma.project.delete({ where: { id } });
 
 export const projectService = { getAllProjects, getProjectById, createProject, updateProject, deleteProject };

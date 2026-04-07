@@ -104,11 +104,53 @@ const formatErrorMeta = (meta?: Record<string, unknown>): string => {
   return parts.length > 0 ? parts.join(" |") : "";
 };
 
+const extractConstraintFields = (meta?: Record<string, unknown>): string[] => {
+  if (!meta) return [];
+
+  if (Array.isArray(meta.target)) {
+    return meta.target.map((item) => String(item));
+  }
+
+  if (meta.driverAdapterError && typeof meta.driverAdapterError === "object") {
+    const driverAdapterError = meta.driverAdapterError as Record<string, unknown>;
+
+    if (driverAdapterError.cause && typeof driverAdapterError.cause === "object") {
+      const cause = driverAdapterError.cause as Record<string, unknown>;
+
+      if (cause.constraint && typeof cause.constraint === "object") {
+        const constraint = cause.constraint as Record<string, unknown>;
+        if (Array.isArray(constraint.fields)) {
+          return constraint.fields.map((item) => String(item));
+        }
+      }
+    }
+  }
+
+  return [];
+};
+
 export const handlePrismaClientKnownRequestError = (
   error: Prisma.PrismaClientKnownRequestError,
 ): TErrorResponse => {
   const statusCode = getStatusCodeFromPrismaError(error.code);
   const metaInfo = formatErrorMeta(error.meta);
+
+  if (error.code === "P2002") {
+    const fields = extractConstraintFields(error.meta);
+    const fieldLabel = fields.length > 0 ? fields.join(", ") : "unique field";
+
+    return {
+      success: false,
+      statusCode,
+      message: "Unique constraint failed",
+      errorSources: [
+        {
+          path: fields[0] || "P2002",
+          message: `A record with this ${fieldLabel} already exists.`,
+        },
+      ],
+    };
+  }
 
   let cleanMessage = error.message;
 
