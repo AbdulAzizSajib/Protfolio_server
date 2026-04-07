@@ -1,0 +1,818 @@
+{
+  "info": {
+    "name": "Portfolio Server API",
+    "description": "Postman collection for Portfolio PERN server auth and user modules.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "1c8db5d9-7f2f-4d30-a9ec-portfolio-server-api"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000" },
+    { "key": "email", "value": "admin@example.com" },
+    { "key": "password", "value": "12345678" },
+    { "key": "accessToken", "value": "" },
+    { "key": "refreshToken", "value": "" },
+    { "key": "sessionToken", "value": "" },
+    { "key": "profileId", "value": "" },
+    { "key": "categoryId", "value": "" },
+    { "key": "tagId", "value": "" },
+    { "key": "skillId", "value": "" },
+    { "key": "projectId", "value": "" },
+    { "key": "experienceId", "value": "" },
+    { "key": "educationId", "value": "" },
+    { "key": "certificationId", "value": "" },
+    { "key": "testimonialId", "value": "" },
+    { "key": "contactMessageId", "value": "" },
+    { "key": "pageViewId", "value": "" },
+    { "key": "otp", "value": "000000" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Server Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/",
+              "host": ["{{baseUrl}}"],
+              "path": [""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Admin User\",\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is success', function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+                  "});",
+                  "pm.test('Store auth tokens from response', function () {",
+                  "  const body = pm.response.json();",
+                  "  const token = body?.data?.token || body?.data?.sessionToken || body?.token || '';",
+                  "  const access = body?.data?.accessToken || body?.accessToken || '';",
+                  "  const refresh = body?.data?.refreshToken || body?.refreshToken || '';",
+                  "  if (token) pm.collectionVariables.set('sessionToken', token);",
+                  "  if (access) pm.collectionVariables.set('accessToken', access);",
+                  "  if (refresh) pm.collectionVariables.set('refreshToken', refresh);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Get Me",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "better-auth.session_token={{sessionToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "me"]
+            }
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "refreshToken={{refreshToken}}; better-auth.session_token={{sessionToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/refresh-token",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "refresh-token"]
+            }
+          }
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              {
+                "key": "Cookie",
+                "value": "better-auth.session_token={{sessionToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentPassword\": \"{{password}}\",\n  \"newPassword\": \"newPassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/change-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "change-password"]
+            }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "better-auth.session_token={{sessionToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "logout"]
+            }
+          }
+        },
+        {
+          "name": "Verify Email",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{email}}\",\n  \"otp\": \"{{otp}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/verify-email",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "verify-email"]
+            }
+          }
+        },
+        {
+          "name": "Resend OTP",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{email}}\",\n  \"type\": \"email-verification\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/resend-otp",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "resend-otp"]
+            }
+          }
+        },
+        {
+          "name": "Forget Password",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{email}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/forget-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "forget-password"]
+            }
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{email}}\",\n  \"otp\": \"{{otp}}\",\n  \"newPassword\": \"newPassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/reset-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "reset-password"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "Get Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "better-auth.session_token={{sessionToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/users/dashboard",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "users", "dashboard"]
+            }
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "better-auth.session_token={{sessionToken}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "name", "value": "Updated Name", "type": "text" },
+                { "key": "phone", "value": "01700000000", "type": "text" },
+                { "key": "image", "type": "file", "src": "" }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/users/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "users", "profile"]
+            }
+          }
+        },
+        {
+          "name": "Create Admin",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              {
+                "key": "Cookie",
+                "value": "better-auth.session_token={{sessionToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"password\": \"12345678\",\n  \"role\": \"ADMIN\",\n  \"admin\": {\n    \"name\": \"Second Admin\",\n    \"email\": \"second-admin@example.com\",\n    \"contactNumber\": \"01700000000\",\n    \"profilePhoto\": \"https://example.com/photo.jpg\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/users/create-admin",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "users", "create-admin"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Profile",
+      "item": [
+        {
+          "name": "Get Public Profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "profile"]
+            }
+          }
+        },
+        {
+          "name": "Get My Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "better-auth.session_token={{sessionToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/profile/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "profile", "me"]
+            }
+          }
+        },
+        {
+          "name": "Update My Profile",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "better-auth.session_token={{sessionToken}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "tagline",
+                  "value": "Full Stack Developer",
+                  "type": "text"
+                },
+                {
+                  "key": "bio",
+                  "value": "Building portfolio experiences and API-driven apps.",
+                  "type": "text"
+                },
+                {
+                  "key": "location",
+                  "value": "Dhaka, Bangladesh",
+                  "type": "text"
+                },
+                {
+                  "key": "website",
+                  "value": "https://example.com",
+                  "type": "text"
+                },
+                { "key": "available", "value": "true", "type": "text" },
+                {
+                  "key": "github",
+                  "value": "https://github.com/example",
+                  "type": "text"
+                },
+                {
+                  "key": "linkedin",
+                  "value": "https://linkedin.com/in/example",
+                  "type": "text"
+                },
+                { "key": "avatar", "type": "file", "src": "" }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/profile/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "profile", "me"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "Get Categories",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/categories?page=1&limit=10&searchTerm=design",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "categories"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "searchTerm", "value": "design" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Category By Id",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/categories/{{categoryId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "categories", "{{categoryId}}"]
+            }
+          }
+        },
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              {
+                "key": "Cookie",
+                "value": "better-auth.session_token={{sessionToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Web Development\",\n  \"slug\": \"web-development\",\n  \"description\": \"Web and app projects\",\n  \"color\": \"#2563EB\",\n  \"icon\": \"code\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "categories"]
+            }
+          }
+        },
+        {
+          "name": "Update Category",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              {
+                "key": "Cookie",
+                "value": "better-auth.session_token={{sessionToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Web Development Updated\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/categories/{{categoryId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "categories", "{{categoryId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Category",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "better-auth.session_token={{sessionToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/categories/{{categoryId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "categories", "{{categoryId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tags",
+      "item": [
+        {
+          "name": "Get Tags",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/tags?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "tags"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Tag",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              {
+                "key": "Cookie",
+                "value": "better-auth.session_token={{sessionToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"React\",\n  \"slug\": \"react\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/tags",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "tags"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Skills",
+      "item": [
+        {
+          "name": "Get Skills",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/skills?page=1&limit=10&category=FRONTEND",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "skills"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "category", "value": "FRONTEND" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Skill",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              {
+                "key": "Cookie",
+                "value": "better-auth.session_token={{sessionToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"TypeScript\",\n  \"iconUrl\": \"https://example.com/ts.png\",\n  \"proficiency\": 90,\n  \"category\": \"FRONTEND\",\n  \"sortOrder\": 1,\n  \"featured\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/skills",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "skills"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Projects",
+      "item": [
+        {
+          "name": "Get Projects",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/projects?page=1&limit=10&featured=true&status=PUBLISHED",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "projects"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "featured", "value": "true" },
+                { "key": "status", "value": "PUBLISHED" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Project",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              {
+                "key": "Cookie",
+                "value": "better-auth.session_token={{sessionToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Portfolio Website\",\n  \"slug\": \"portfolio-website\",\n  \"description\": \"Personal portfolio website\",\n  \"content\": \"Detailed case study content\",\n  \"coverImage\": \"https://example.com/cover.jpg\",\n  \"liveUrl\": \"https://example.com\",\n  \"githubUrl\": \"https://github.com/example/portfolio\",\n  \"featured\": true,\n  \"status\": \"PUBLISHED\",\n  \"sortOrder\": 1,\n  \"categoryId\": \"{{categoryId}}\",\n  \"tags\": [{ \"tagId\": \"{{tagId}}\" }],\n  \"skills\": [{ \"skillId\": \"{{skillId}}\" }],\n  \"images\": [{ \"url\": \"https://example.com/img-1.jpg\", \"alt\": \"Screenshot\", \"sortOrder\": 1 }]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/projects",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "projects"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Career",
+      "item": [
+        {
+          "name": "Get Experiences",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/experiences?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "experiences"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Experience",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              {
+                "key": "Cookie",
+                "value": "better-auth.session_token={{sessionToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"company\": \"Tech Corp\",\n  \"role\": \"Software Engineer\",\n  \"description\": \"Built APIs and frontend features\",\n  \"employmentType\": \"Full-time\",\n  \"locationType\": \"REMOTE\",\n  \"startDate\": \"2024-01-01T00:00:00.000Z\",\n  \"current\": true,\n  \"sortOrder\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/experiences",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "experiences"]
+            }
+          }
+        },
+        {
+          "name": "Get Educations",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/educations?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "educations"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Certifications",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/certifications?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "certifications"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Content",
+      "item": [
+        {
+          "name": "Get Testimonials",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/testimonials?page=1&limit=10&approved=true",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "testimonials"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "approved", "value": "true" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Testimonial",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              {
+                "key": "Cookie",
+                "value": "better-auth.session_token={{sessionToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Jane Doe\",\n  \"role\": \"Product Manager\",\n  \"company\": \"Acme Inc\",\n  \"avatarUrl\": \"https://example.com/avatar.jpg\",\n  \"content\": \"Excellent work and clear communication.\",\n  \"rating\": 5,\n  \"featured\": true,\n  \"approved\": true,\n  \"projectId\": \"{{projectId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/testimonials",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "testimonials"]
+            }
+          }
+        },
+        {
+          "name": "Create Contact Message",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Visitor Name\",\n  \"email\": \"visitor@example.com\",\n  \"subject\": \"Project inquiry\",\n  \"message\": \"I would like to discuss a portfolio project.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/contact-messages",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "contact-messages"]
+            }
+          }
+        },
+        {
+          "name": "Get Contact Messages",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "better-auth.session_token={{sessionToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/contact-messages?page=1&limit=10&status=UNREAD",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "contact-messages"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "status", "value": "UNREAD" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Analytics",
+      "item": [
+        {
+          "name": "Create Page View",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"path\": \"/\",\n  \"referrer\": \"https://google.com\",\n  \"userAgent\": \"Postman\",\n  \"ip\": \"127.0.0.1\",\n  \"country\": \"BD\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/page-views",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "page-views"]
+            }
+          }
+        },
+        {
+          "name": "Get Page Views",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "better-auth.session_token={{sessionToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/page-views?page=1&limit=10&country=BD",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "page-views"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "country", "value": "BD" }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
