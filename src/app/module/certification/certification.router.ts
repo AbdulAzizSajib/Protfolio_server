@@ -5,7 +5,7 @@ import { validateRequest } from "../../middleware/validateRequest";
 import { certificationController } from "./certification.controller";
 import { CertificationValidation } from "./certification.validation";
 
-const certificationRouter = Router();
+const certificationRouter: Router = Router();
 
 certificationRouter.get("/", certificationController.getAllCertifications);
 certificationRouter.get("/:id", certificationController.getCertificationById);

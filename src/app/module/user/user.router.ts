@@ -6,7 +6,7 @@ import { checkAuth } from "../../middleware/checkAuth";
 import { Role } from "../../../generated/prisma/enums";
 import { multerUpload } from "../../config/multer.config";
 
-const userRouter = Router();
+const userRouter: Router = Router();
 
 // Dashboard
 userRouter.get(

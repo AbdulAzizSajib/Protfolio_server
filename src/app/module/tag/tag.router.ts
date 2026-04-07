@@ -5,7 +5,7 @@ import { validateRequest } from "../../middleware/validateRequest";
 import { tagController } from "./tag.controller";
 import { TagValidation } from "./tag.validation";
 
-const tagRouter = Router();
+const tagRouter: Router = Router();
 
 tagRouter.get("/", tagController.getAllTags);
 tagRouter.get("/:id", tagController.getTagById);

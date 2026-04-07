@@ -1,4 +1,4 @@
-import express from "express";
+import express, { type Express } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
@@ -23,7 +23,7 @@ import { notFoundMiddleware } from "./middleware/notFound";
 import { envVars } from "./config/env";
 import { auth } from "./lib/auth";
 
-const app = express();
+const app: Express = express();
 
 app.set("view engine", "ejs");
 app.set("views", path.resolve(process.cwd(), `src/app/templates`));

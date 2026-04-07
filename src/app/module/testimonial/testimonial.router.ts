@@ -5,7 +5,7 @@ import { validateRequest } from "../../middleware/validateRequest";
 import { testimonialController } from "./testimonial.controller";
 import { TestimonialValidation } from "./testimonial.validation";
 
-const testimonialRouter = Router();
+const testimonialRouter: Router = Router();
 
 testimonialRouter.get("/", testimonialController.getAllTestimonials);
 testimonialRouter.get("/:id", testimonialController.getTestimonialById);

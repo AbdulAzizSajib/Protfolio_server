@@ -3,7 +3,7 @@ import { authController } from "./auth.controller";
 import { checkAuth } from "../../middleware/checkAuth";
 import { Role } from "../../../generated/prisma/enums";
 
-const authRouter = Router();
+const authRouter: Router = Router();
 
 authRouter.post("/register", authController.registerUser);
 authRouter.post("/login", authController.loginUser);

@@ -5,7 +5,7 @@ import { validateRequest } from "../../middleware/validateRequest";
 import { educationController } from "./education.controller";
 import { EducationValidation } from "./education.validation";
 
-const educationRouter = Router();
+const educationRouter: Router = Router();
 
 educationRouter.get("/", educationController.getAllEducations);
 educationRouter.get("/:id", educationController.getEducationById);

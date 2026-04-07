@@ -5,7 +5,7 @@ import { validateRequest } from "../../middleware/validateRequest";
 import { experienceController } from "./experience.controller";
 import { ExperienceValidation } from "./experience.validation";
 
-const experienceRouter = Router();
+const experienceRouter: Router = Router();
 
 experienceRouter.get("/", experienceController.getAllExperiences);
 experienceRouter.get("/:id", experienceController.getExperienceById);

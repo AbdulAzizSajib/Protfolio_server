@@ -5,7 +5,7 @@ import { validateRequest } from "../../middleware/validateRequest";
 import { contactMessageController } from "./contactMessage.controller";
 import { ContactMessageValidation } from "./contactMessage.validation";
 
-const contactMessageRouter = Router();
+const contactMessageRouter: Router = Router();
 
 contactMessageRouter.post("/", validateRequest(ContactMessageValidation.createContactMessageZodSchema), contactMessageController.createContactMessage);
 contactMessageRouter.get("/", checkAuth(Role.ADMIN, Role.OWNER), contactMessageController.getAllContactMessages);

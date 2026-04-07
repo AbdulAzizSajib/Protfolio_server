@@ -6,7 +6,7 @@ import { multerUpload } from "../../config/multer.config";
 import { profileController } from "./profile.controller";
 import { ProfileValidation } from "./profile.validation";
 
-const profileRouter = Router();
+const profileRouter: Router = Router();
 
 profileRouter.get("/", profileController.getPublicProfile);
 profileRouter.get("/me", checkAuth(Role.ADMIN, Role.OWNER), profileController.getMyProfile);

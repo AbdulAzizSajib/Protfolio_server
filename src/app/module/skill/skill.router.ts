@@ -5,7 +5,7 @@ import { validateRequest } from "../../middleware/validateRequest";
 import { skillController } from "./skill.controller";
 import { SkillValidation } from "./skill.validation";
 
-const skillRouter = Router();
+const skillRouter: Router = Router();
 
 skillRouter.get("/", skillController.getAllSkills);
 skillRouter.get("/:id", skillController.getSkillById);

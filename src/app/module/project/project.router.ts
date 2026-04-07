@@ -5,7 +5,7 @@ import { validateRequest } from "../../middleware/validateRequest";
 import { projectController } from "./project.controller";
 import { ProjectValidation } from "./project.validation";
 
-const projectRouter = Router();
+const projectRouter: Router = Router();
 
 projectRouter.get("/", projectController.getAllProjects);
 projectRouter.get("/:id", projectController.getProjectById);

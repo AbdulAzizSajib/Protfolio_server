@@ -5,7 +5,7 @@ import { validateRequest } from "../../middleware/validateRequest";
 import { pageViewController } from "./pageView.controller";
 import { PageViewValidation } from "./pageView.validation";
 
-const pageViewRouter = Router();
+const pageViewRouter: Router = Router();
 
 pageViewRouter.post("/", validateRequest(PageViewValidation.createPageViewZodSchema), pageViewController.createPageView);
 pageViewRouter.get("/", checkAuth(Role.ADMIN, Role.OWNER), pageViewController.getAllPageViews);
