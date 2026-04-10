@@ -31,6 +31,8 @@ export type PageViewMinAggregateOutputType = {
   userAgent: string | null
   ip: string | null
   country: string | null
+  eventType: string | null
+  section: string | null
   createdAt: Date | null
 }
 
@@ -41,6 +43,8 @@ export type PageViewMaxAggregateOutputType = {
   userAgent: string | null
   ip: string | null
   country: string | null
+  eventType: string | null
+  section: string | null
   createdAt: Date | null
 }
 
@@ -51,6 +55,8 @@ export type PageViewCountAggregateOutputType = {
   userAgent: number
   ip: number
   country: number
+  eventType: number
+  section: number
   createdAt: number
   _all: number
 }
@@ -63,6 +69,8 @@ export type PageViewMinAggregateInputType = {
   userAgent?: true
   ip?: true
   country?: true
+  eventType?: true
+  section?: true
   createdAt?: true
 }
 
@@ -73,6 +81,8 @@ export type PageViewMaxAggregateInputType = {
   userAgent?: true
   ip?: true
   country?: true
+  eventType?: true
+  section?: true
   createdAt?: true
 }
 
@@ -83,6 +93,8 @@ export type PageViewCountAggregateInputType = {
   userAgent?: true
   ip?: true
   country?: true
+  eventType?: true
+  section?: true
   createdAt?: true
   _all?: true
 }
@@ -166,6 +178,8 @@ export type PageViewGroupByOutputType = {
   userAgent: string | null
   ip: string | null
   country: string | null
+  eventType: string
+  section: string | null
   createdAt: Date
   _count: PageViewCountAggregateOutputType | null
   _min: PageViewMinAggregateOutputType | null
@@ -197,6 +211,8 @@ export type PageViewWhereInput = {
   userAgent?: Prisma.StringNullableFilter<"PageView"> | string | null
   ip?: Prisma.StringNullableFilter<"PageView"> | string | null
   country?: Prisma.StringNullableFilter<"PageView"> | string | null
+  eventType?: Prisma.StringFilter<"PageView"> | string
+  section?: Prisma.StringNullableFilter<"PageView"> | string | null
   createdAt?: Prisma.DateTimeFilter<"PageView"> | Date | string
 }
 
@@ -207,6 +223,8 @@ export type PageViewOrderByWithRelationInput = {
   userAgent?: Prisma.SortOrderInput | Prisma.SortOrder
   ip?: Prisma.SortOrderInput | Prisma.SortOrder
   country?: Prisma.SortOrderInput | Prisma.SortOrder
+  eventType?: Prisma.SortOrder
+  section?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -220,6 +238,8 @@ export type PageViewWhereUniqueInput = Prisma.AtLeast<{
   userAgent?: Prisma.StringNullableFilter<"PageView"> | string | null
   ip?: Prisma.StringNullableFilter<"PageView"> | string | null
   country?: Prisma.StringNullableFilter<"PageView"> | string | null
+  eventType?: Prisma.StringFilter<"PageView"> | string
+  section?: Prisma.StringNullableFilter<"PageView"> | string | null
   createdAt?: Prisma.DateTimeFilter<"PageView"> | Date | string
 }, "id">
 
@@ -230,6 +250,8 @@ export type PageViewOrderByWithAggregationInput = {
   userAgent?: Prisma.SortOrderInput | Prisma.SortOrder
   ip?: Prisma.SortOrderInput | Prisma.SortOrder
   country?: Prisma.SortOrderInput | Prisma.SortOrder
+  eventType?: Prisma.SortOrder
+  section?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.PageViewCountOrderByAggregateInput
   _max?: Prisma.PageViewMaxOrderByAggregateInput
@@ -246,6 +268,8 @@ export type PageViewScalarWhereWithAggregatesInput = {
   userAgent?: Prisma.StringNullableWithAggregatesFilter<"PageView"> | string | null
   ip?: Prisma.StringNullableWithAggregatesFilter<"PageView"> | string | null
   country?: Prisma.StringNullableWithAggregatesFilter<"PageView"> | string | null
+  eventType?: Prisma.StringWithAggregatesFilter<"PageView"> | string
+  section?: Prisma.StringNullableWithAggregatesFilter<"PageView"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"PageView"> | Date | string
 }
 
@@ -256,6 +280,8 @@ export type PageViewCreateInput = {
   userAgent?: string | null
   ip?: string | null
   country?: string | null
+  eventType?: string
+  section?: string | null
   createdAt?: Date | string
 }
 
@@ -266,6 +292,8 @@ export type PageViewUncheckedCreateInput = {
   userAgent?: string | null
   ip?: string | null
   country?: string | null
+  eventType?: string
+  section?: string | null
   createdAt?: Date | string
 }
 
@@ -276,6 +304,8 @@ export type PageViewUpdateInput = {
   userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ip?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eventType?: Prisma.StringFieldUpdateOperationsInput | string
+  section?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -286,6 +316,8 @@ export type PageViewUncheckedUpdateInput = {
   userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ip?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eventType?: Prisma.StringFieldUpdateOperationsInput | string
+  section?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -296,6 +328,8 @@ export type PageViewCreateManyInput = {
   userAgent?: string | null
   ip?: string | null
   country?: string | null
+  eventType?: string
+  section?: string | null
   createdAt?: Date | string
 }
 
@@ -306,6 +340,8 @@ export type PageViewUpdateManyMutationInput = {
   userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ip?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eventType?: Prisma.StringFieldUpdateOperationsInput | string
+  section?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -316,6 +352,8 @@ export type PageViewUncheckedUpdateManyInput = {
   userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   ip?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eventType?: Prisma.StringFieldUpdateOperationsInput | string
+  section?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -326,6 +364,8 @@ export type PageViewCountOrderByAggregateInput = {
   userAgent?: Prisma.SortOrder
   ip?: Prisma.SortOrder
   country?: Prisma.SortOrder
+  eventType?: Prisma.SortOrder
+  section?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -336,6 +376,8 @@ export type PageViewMaxOrderByAggregateInput = {
   userAgent?: Prisma.SortOrder
   ip?: Prisma.SortOrder
   country?: Prisma.SortOrder
+  eventType?: Prisma.SortOrder
+  section?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -346,6 +388,8 @@ export type PageViewMinOrderByAggregateInput = {
   userAgent?: Prisma.SortOrder
   ip?: Prisma.SortOrder
   country?: Prisma.SortOrder
+  eventType?: Prisma.SortOrder
+  section?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -358,6 +402,8 @@ export type PageViewSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   userAgent?: boolean
   ip?: boolean
   country?: boolean
+  eventType?: boolean
+  section?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["pageView"]>
 
@@ -368,6 +414,8 @@ export type PageViewSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   userAgent?: boolean
   ip?: boolean
   country?: boolean
+  eventType?: boolean
+  section?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["pageView"]>
 
@@ -378,6 +426,8 @@ export type PageViewSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   userAgent?: boolean
   ip?: boolean
   country?: boolean
+  eventType?: boolean
+  section?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["pageView"]>
 
@@ -388,10 +438,12 @@ export type PageViewSelectScalar = {
   userAgent?: boolean
   ip?: boolean
   country?: boolean
+  eventType?: boolean
+  section?: boolean
   createdAt?: boolean
 }
 
-export type PageViewOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "path" | "referrer" | "userAgent" | "ip" | "country" | "createdAt", ExtArgs["result"]["pageView"]>
+export type PageViewOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "path" | "referrer" | "userAgent" | "ip" | "country" | "eventType" | "section" | "createdAt", ExtArgs["result"]["pageView"]>
 
 export type $PageViewPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "PageView"
@@ -403,6 +455,8 @@ export type $PageViewPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     userAgent: string | null
     ip: string | null
     country: string | null
+    eventType: string
+    section: string | null
     createdAt: Date
   }, ExtArgs["result"]["pageView"]>
   composites: {}
@@ -833,6 +887,8 @@ export interface PageViewFieldRefs {
   readonly userAgent: Prisma.FieldRef<"PageView", 'String'>
   readonly ip: Prisma.FieldRef<"PageView", 'String'>
   readonly country: Prisma.FieldRef<"PageView", 'String'>
+  readonly eventType: Prisma.FieldRef<"PageView", 'String'>
+  readonly section: Prisma.FieldRef<"PageView", 'String'>
   readonly createdAt: Prisma.FieldRef<"PageView", 'DateTime'>
 }
     

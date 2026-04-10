@@ -397,6 +397,45 @@
       ]
     },
     {
+      "name": "About",
+      "item": [
+        {
+          "name": "Get Public About",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/about",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "about"]
+            }
+          }
+        },
+        {
+          "name": "Upsert About",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              {
+                "key": "Cookie",
+                "value": "better-auth.session_token={{sessionToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"About Me\",\n  \"subtitle\": \"Full Stack Developer & Creative Problem Solver\",\n  \"description\": \"I'm a passionate full-stack developer with 5+ years of experience building high-performance web applications. I specialize in modern JavaScript, React, Node.js, and cloud technologies. Let's create something amazing together!\",\n  \"yearsOfExperience\": 2.5,\n  \"projectsCompleted\": 20,\n  \"clientsWorkedWith\": 15,\n  \"imageUrl\": \"https://example.com/about-image.jpg\",\n  \"resumeUrl\": \"https://example.com/resume.pdf\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/about",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "about"]
+            }
+          }
+        }
+      ]
+    },
+    {
       "name": "Categories",
       "item": [
         {

@@ -56,6 +56,7 @@ export const ModelName = {
   Account: 'Account',
   Verification: 'Verification',
   Profile: 'Profile',
+  About: 'About',
   Project: 'Project',
   ProjectImage: 'ProjectImage',
   Category: 'Category',
@@ -171,6 +172,24 @@ export const ProfileScalarFieldEnum = {
 } as const
 
 export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeof ProfileScalarFieldEnum]
+
+
+export const AboutScalarFieldEnum = {
+  id: 'id',
+  key: 'key',
+  title: 'title',
+  subtitle: 'subtitle',
+  description: 'description',
+  yearsOfExperience: 'yearsOfExperience',
+  projectsCompleted: 'projectsCompleted',
+  clientsWorkedWith: 'clientsWorkedWith',
+  imageUrl: 'imageUrl',
+  resumeUrl: 'resumeUrl',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AboutScalarFieldEnum = (typeof AboutScalarFieldEnum)[keyof typeof AboutScalarFieldEnum]
 
 
 export const ProjectScalarFieldEnum = {
@@ -372,6 +391,8 @@ export const PageViewScalarFieldEnum = {
   userAgent: 'userAgent',
   ip: 'ip',
   country: 'country',
+  eventType: 'eventType',
+  section: 'section',
   createdAt: 'createdAt'
 } as const
 

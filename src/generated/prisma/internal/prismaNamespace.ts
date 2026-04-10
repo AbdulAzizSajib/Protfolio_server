@@ -389,6 +389,7 @@ export const ModelName = {
   Account: 'Account',
   Verification: 'Verification',
   Profile: 'Profile',
+  About: 'About',
   Project: 'Project',
   ProjectImage: 'ProjectImage',
   Category: 'Category',
@@ -419,7 +420,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "account" | "verification" | "profile" | "project" | "projectImage" | "category" | "tag" | "projectTag" | "skill" | "projectSkill" | "experience" | "education" | "certification" | "post" | "postTag" | "testimonial" | "contactMessage" | "pageView"
+    modelProps: "user" | "session" | "account" | "verification" | "profile" | "about" | "project" | "projectImage" | "category" | "tag" | "projectTag" | "skill" | "projectSkill" | "experience" | "education" | "certification" | "post" | "postTag" | "testimonial" | "contactMessage" | "pageView"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -790,6 +791,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.ProfileCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.ProfileCountAggregateOutputType> | number
+        }
+      }
+    }
+    About: {
+      payload: Prisma.$AboutPayload<ExtArgs>
+      fields: Prisma.AboutFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AboutFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AboutPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AboutFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AboutPayload>
+        }
+        findFirst: {
+          args: Prisma.AboutFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AboutPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AboutFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AboutPayload>
+        }
+        findMany: {
+          args: Prisma.AboutFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AboutPayload>[]
+        }
+        create: {
+          args: Prisma.AboutCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AboutPayload>
+        }
+        createMany: {
+          args: Prisma.AboutCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AboutCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AboutPayload>[]
+        }
+        delete: {
+          args: Prisma.AboutDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AboutPayload>
+        }
+        update: {
+          args: Prisma.AboutUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AboutPayload>
+        }
+        deleteMany: {
+          args: Prisma.AboutDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AboutUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AboutUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AboutPayload>[]
+        }
+        upsert: {
+          args: Prisma.AboutUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AboutPayload>
+        }
+        aggregate: {
+          args: Prisma.AboutAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAbout>
+        }
+        groupBy: {
+          args: Prisma.AboutGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AboutGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AboutCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AboutCountAggregateOutputType> | number
         }
       }
     }
@@ -2026,6 +2101,24 @@ export const ProfileScalarFieldEnum = {
 export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeof ProfileScalarFieldEnum]
 
 
+export const AboutScalarFieldEnum = {
+  id: 'id',
+  key: 'key',
+  title: 'title',
+  subtitle: 'subtitle',
+  description: 'description',
+  yearsOfExperience: 'yearsOfExperience',
+  projectsCompleted: 'projectsCompleted',
+  clientsWorkedWith: 'clientsWorkedWith',
+  imageUrl: 'imageUrl',
+  resumeUrl: 'resumeUrl',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AboutScalarFieldEnum = (typeof AboutScalarFieldEnum)[keyof typeof AboutScalarFieldEnum]
+
+
 export const ProjectScalarFieldEnum = {
   id: 'id',
   title: 'title',
@@ -2225,6 +2318,8 @@ export const PageViewScalarFieldEnum = {
   userAgent: 'userAgent',
   ip: 'ip',
   country: 'country',
+  eventType: 'eventType',
+  section: 'section',
   createdAt: 'createdAt'
 } as const
 
@@ -2311,16 +2406,16 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
- * Reference to a field of type 'ProjectStatus'
+ * Reference to a field of type 'Float'
  */
-export type EnumProjectStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProjectStatus'>
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
     
 
 
 /**
- * Reference to a field of type 'ProjectStatus[]'
+ * Reference to a field of type 'Float[]'
  */
-export type ListEnumProjectStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProjectStatus[]'>
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 
@@ -2335,6 +2430,20 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'ProjectStatus'
+ */
+export type EnumProjectStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProjectStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'ProjectStatus[]'
+ */
+export type ListEnumProjectStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProjectStatus[]'>
     
 
 
@@ -2377,20 +2486,6 @@ export type EnumMessageStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pr
  * Reference to a field of type 'MessageStatus[]'
  */
 export type ListEnumMessageStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MessageStatus[]'>
-    
-
-
-/**
- * Reference to a field of type 'Float'
- */
-export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
-
-
-/**
- * Reference to a field of type 'Float[]'
- */
-export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 /**
@@ -2493,6 +2588,7 @@ export type GlobalOmitConfig = {
   account?: Prisma.AccountOmit
   verification?: Prisma.VerificationOmit
   profile?: Prisma.ProfileOmit
+  about?: Prisma.AboutOmit
   project?: Prisma.ProjectOmit
   projectImage?: Prisma.ProjectImageOmit
   category?: Prisma.CategoryOmit

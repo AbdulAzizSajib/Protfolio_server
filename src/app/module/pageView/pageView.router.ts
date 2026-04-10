@@ -9,6 +9,7 @@ const pageViewRouter: Router = Router();
 
 pageViewRouter.post("/", validateRequest(PageViewValidation.createPageViewZodSchema), pageViewController.createPageView);
 pageViewRouter.get("/", checkAuth(Role.ADMIN, Role.OWNER), pageViewController.getAllPageViews);
+pageViewRouter.get("/summary", checkAuth(Role.ADMIN, Role.OWNER), pageViewController.getPageViewsSummary);
 pageViewRouter.get("/:id", checkAuth(Role.ADMIN, Role.OWNER), pageViewController.getPageViewById);
 pageViewRouter.delete("/:id", checkAuth(Role.ADMIN, Role.OWNER), pageViewController.deletePageView);
 
