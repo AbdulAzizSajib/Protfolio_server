@@ -32,3 +32,5 @@ src/generated/prisma/
 # OS/editor junk
 .DS_Store
 Thumbs.db
+
+.vercel

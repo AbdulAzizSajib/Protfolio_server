@@ -8,6 +8,8 @@ export declare const pageViewService: {
             ip: string | null;
             referrer: string | null;
             country: string | null;
+            eventType: string;
+            section: string | null;
         }[];
         meta: {
             page: number;
@@ -24,6 +26,8 @@ export declare const pageViewService: {
         ip: string | null;
         referrer: string | null;
         country: string | null;
+        eventType: string;
+        section: string | null;
     }>;
     createPageView: (payload: Record<string, unknown>) => Promise<{
         path: string;
@@ -33,6 +37,20 @@ export declare const pageViewService: {
         ip: string | null;
         referrer: string | null;
         country: string | null;
+        eventType: string;
+        section: string | null;
+    }>;
+    getPageViewsSummary: (query: Record<string, unknown>) => Promise<{
+        totalViews: number;
+        uniqueVisitors: number;
+        topSections: {
+            section: string;
+            count: number;
+        }[];
+        eventBreakdown: {
+            eventType: string;
+            count: number;
+        }[];
     }>;
     deletePageView: (id: string) => Promise<{
         path: string;
@@ -42,6 +60,8 @@ export declare const pageViewService: {
         ip: string | null;
         referrer: string | null;
         country: string | null;
+        eventType: string;
+        section: string | null;
     }>;
 };
 //# sourceMappingURL=pageView.service.d.ts.map

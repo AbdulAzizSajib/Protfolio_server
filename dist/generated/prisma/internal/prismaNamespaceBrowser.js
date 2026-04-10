@@ -44,6 +44,7 @@ export const ModelName = {
     Account: 'Account',
     Verification: 'Verification',
     Profile: 'Profile',
+    About: 'About',
     Project: 'Project',
     ProjectImage: 'ProjectImage',
     Category: 'Category',
@@ -132,6 +133,20 @@ export const ProfileScalarFieldEnum = {
     behance: 'behance',
     metaTitle: 'metaTitle',
     metaDescription: 'metaDescription'
+};
+export const AboutScalarFieldEnum = {
+    id: 'id',
+    key: 'key',
+    title: 'title',
+    subtitle: 'subtitle',
+    description: 'description',
+    yearsOfExperience: 'yearsOfExperience',
+    projectsCompleted: 'projectsCompleted',
+    clientsWorkedWith: 'clientsWorkedWith',
+    imageUrl: 'imageUrl',
+    resumeUrl: 'resumeUrl',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
 };
 export const ProjectScalarFieldEnum = {
     id: 'id',
@@ -276,6 +291,8 @@ export const PageViewScalarFieldEnum = {
     userAgent: 'userAgent',
     ip: 'ip',
     country: 'country',
+    eventType: 'eventType',
+    section: 'section',
     createdAt: 'createdAt'
 };
 export const SortOrder = {

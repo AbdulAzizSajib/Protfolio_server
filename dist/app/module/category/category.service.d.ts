@@ -3,8 +3,8 @@ export declare const categoryService: {
         data: {
             name: string;
             id: string;
-            slug: string;
             description: string | null;
+            slug: string;
             color: string | null;
             icon: string | null;
         }[];
@@ -18,32 +18,32 @@ export declare const categoryService: {
     getCategoryById: (id: string) => Promise<{
         name: string;
         id: string;
-        slug: string;
         description: string | null;
+        slug: string;
         color: string | null;
         icon: string | null;
     }>;
     createCategory: (payload: Record<string, unknown>) => Promise<{
         name: string;
         id: string;
-        slug: string;
         description: string | null;
+        slug: string;
         color: string | null;
         icon: string | null;
     }>;
     updateCategory: (id: string, payload: Record<string, unknown>) => Promise<{
         name: string;
         id: string;
-        slug: string;
         description: string | null;
+        slug: string;
         color: string | null;
         icon: string | null;
     }>;
     deleteCategory: (id: string) => Promise<{
         name: string;
         id: string;
-        slug: string;
         description: string | null;
+        slug: string;
         color: string | null;
         icon: string | null;
     }>;

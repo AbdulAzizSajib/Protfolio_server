@@ -31,6 +31,7 @@ export declare const ModelName: {
     readonly Account: "Account";
     readonly Verification: "Verification";
     readonly Profile: "Profile";
+    readonly About: "About";
     readonly Project: "Project";
     readonly ProjectImage: "ProjectImage";
     readonly Category: "Category";
@@ -124,6 +125,21 @@ export declare const ProfileScalarFieldEnum: {
     readonly metaDescription: "metaDescription";
 };
 export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeof ProfileScalarFieldEnum];
+export declare const AboutScalarFieldEnum: {
+    readonly id: "id";
+    readonly key: "key";
+    readonly title: "title";
+    readonly subtitle: "subtitle";
+    readonly description: "description";
+    readonly yearsOfExperience: "yearsOfExperience";
+    readonly projectsCompleted: "projectsCompleted";
+    readonly clientsWorkedWith: "clientsWorkedWith";
+    readonly imageUrl: "imageUrl";
+    readonly resumeUrl: "resumeUrl";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type AboutScalarFieldEnum = (typeof AboutScalarFieldEnum)[keyof typeof AboutScalarFieldEnum];
 export declare const ProjectScalarFieldEnum: {
     readonly id: "id";
     readonly title: "title";
@@ -281,6 +297,8 @@ export declare const PageViewScalarFieldEnum: {
     readonly userAgent: "userAgent";
     readonly ip: "ip";
     readonly country: "country";
+    readonly eventType: "eventType";
+    readonly section: "section";
     readonly createdAt: "createdAt";
 };
 export type PageViewScalarFieldEnum = (typeof PageViewScalarFieldEnum)[keyof typeof PageViewScalarFieldEnum];

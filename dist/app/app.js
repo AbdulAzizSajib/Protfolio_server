@@ -6,6 +6,7 @@ import path from "path";
 import authRouter from "./module/auth/auth.router";
 import userRouter from "./module/user/user.router";
 import profileRouter from "./module/profile/profile.router";
+import aboutRouter from "./module/about/about.router";
 import categoryRouter from "./module/category/category.router";
 import tagRouter from "./module/tag/tag.router";
 import skillRouter from "./module/skill/skill.router";
@@ -21,6 +22,7 @@ import { notFoundMiddleware } from "./middleware/notFound";
 import { envVars } from "./config/env";
 import { auth } from "./lib/auth";
 const app = express();
+app.set("trust proxy", true);
 app.set("view engine", "ejs");
 app.set("views", path.resolve(process.cwd(), `src/app/templates`));
 app.use(cors({
@@ -46,6 +48,7 @@ app.get("/", (_req, res) => {
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/profile", profileRouter);
+app.use("/api/v1/about", aboutRouter);
 app.use("/api/v1/categories", categoryRouter);
 app.use("/api/v1/tags", tagRouter);
 app.use("/api/v1/skills", skillRouter);

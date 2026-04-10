@@ -171,6 +171,17 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
         omit: OmitOpts;
     }>;
     /**
+     * `prisma.about`: Exposes CRUD operations for the **About** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more Abouts
+      * const abouts = await prisma.about.findMany()
+      * ```
+      */
+    get about(): Prisma.AboutDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
      * `prisma.project`: Exposes CRUD operations for the **Project** model.
       * Example usage:
       * ```ts

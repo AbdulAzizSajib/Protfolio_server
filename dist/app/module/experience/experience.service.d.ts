@@ -3,8 +3,8 @@ export declare const experienceService: {
         data: {
             id: string;
             role: string;
-            sortOrder: number;
             description: string | null;
+            sortOrder: number;
             startDate: Date;
             endDate: Date | null;
             company: string;
@@ -24,8 +24,8 @@ export declare const experienceService: {
     getExperienceById: (id: string) => Promise<{
         id: string;
         role: string;
-        sortOrder: number;
         description: string | null;
+        sortOrder: number;
         startDate: Date;
         endDate: Date | null;
         company: string;
@@ -38,8 +38,8 @@ export declare const experienceService: {
     createExperience: (payload: Record<string, unknown>) => Promise<{
         id: string;
         role: string;
-        sortOrder: number;
         description: string | null;
+        sortOrder: number;
         startDate: Date;
         endDate: Date | null;
         company: string;
@@ -52,8 +52,8 @@ export declare const experienceService: {
     updateExperience: (id: string, payload: Record<string, unknown>) => Promise<{
         id: string;
         role: string;
-        sortOrder: number;
         description: string | null;
+        sortOrder: number;
         startDate: Date;
         endDate: Date | null;
         company: string;
@@ -66,8 +66,8 @@ export declare const experienceService: {
     deleteExperience: (id: string) => Promise<{
         id: string;
         role: string;
-        sortOrder: number;
         description: string | null;
+        sortOrder: number;
         startDate: Date;
         endDate: Date | null;
         company: string;

@@ -3,6 +3,7 @@ export type * from './models/Session';
 export type * from './models/Account';
 export type * from './models/Verification';
 export type * from './models/Profile';
+export type * from './models/About';
 export type * from './models/Project';
 export type * from './models/ProjectImage';
 export type * from './models/Category';
