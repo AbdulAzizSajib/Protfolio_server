@@ -1,36 +1,42 @@
-import { catchAsync } from "../../shared/catchAsync";
-import { sendResponse } from "../../shared/sendResponse";
-import { userService } from "./user.service";
-import status from "http-status";
-const createAdmin = catchAsync(async (req, res) => {
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.userController = void 0;
+const catchAsync_1 = require("../../shared/catchAsync");
+const sendResponse_1 = require("../../shared/sendResponse");
+const user_service_1 = require("./user.service");
+const http_status_1 = __importDefault(require("http-status"));
+const createAdmin = (0, catchAsync_1.catchAsync)(async (req, res) => {
     const payload = req.body;
-    const result = await userService.createAdmin(payload);
-    sendResponse(res, {
-        httpStatusCode: status.CREATED,
+    const result = await user_service_1.userService.createAdmin(payload);
+    (0, sendResponse_1.sendResponse)(res, {
+        httpStatusCode: http_status_1.default.CREATED,
         success: true,
         message: "Admin created successfully",
         data: result,
     });
 });
-const updateProfile = catchAsync(async (req, res) => {
-    const result = await userService.updateProfile(req.user.userId, req.body, req.file);
-    sendResponse(res, {
-        httpStatusCode: status.OK,
+const updateProfile = (0, catchAsync_1.catchAsync)(async (req, res) => {
+    const result = await user_service_1.userService.updateProfile(req.user.userId, req.body, req.file);
+    (0, sendResponse_1.sendResponse)(res, {
+        httpStatusCode: http_status_1.default.OK,
         success: true,
         message: "Profile updated successfully",
         data: result,
     });
 });
-const getMyDashboard = catchAsync(async (req, res) => {
-    const result = await userService.getMyDashboard(req.user.userId);
-    sendResponse(res, {
-        httpStatusCode: status.OK,
+const getMyDashboard = (0, catchAsync_1.catchAsync)(async (req, res) => {
+    const result = await user_service_1.userService.getMyDashboard(req.user.userId);
+    (0, sendResponse_1.sendResponse)(res, {
+        httpStatusCode: http_status_1.default.OK,
         success: true,
         message: "Dashboard data retrieved successfully",
         data: result,
     });
 });
-export const userController = {
+exports.userController = {
     createAdmin,
     updateProfile,
     getMyDashboard,

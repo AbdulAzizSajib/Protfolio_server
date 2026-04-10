@@ -1,40 +1,43 @@
-import { betterAuth } from "better-auth";
-import { prismaAdapter } from "better-auth/adapters/prisma";
-import { bearer, emailOTP, oAuthProxy } from "better-auth/plugins";
-import { prisma } from "./prisma";
-import { envVars } from "../config/env";
-import { Role } from "../../generated/prisma/enums";
-import { sendEmail } from "../utils/email";
-export const auth = betterAuth({
-    baseURL: envVars.BETTER_AUTH_URL,
-    secret: envVars.BETTER_AUTH_SECRET,
-    database: prismaAdapter(prisma, {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.auth = void 0;
+const better_auth_1 = require("better-auth");
+const prisma_1 = require("better-auth/adapters/prisma");
+const plugins_1 = require("better-auth/plugins");
+const prisma_2 = require("./prisma");
+const env_1 = require("../config/env");
+const enums_1 = require("../../generated/prisma/enums");
+const email_1 = require("../utils/email");
+exports.auth = (0, better_auth_1.betterAuth)({
+    baseURL: env_1.envVars.BETTER_AUTH_URL,
+    secret: env_1.envVars.BETTER_AUTH_SECRET,
+    database: (0, prisma_1.prismaAdapter)(prisma_2.prisma, {
         provider: "postgresql",
     }),
     plugins: [
-        oAuthProxy(),
-        bearer(),
-        emailOTP({
+        (0, plugins_1.oAuthProxy)(),
+        (0, plugins_1.bearer)(),
+        (0, plugins_1.emailOTP)({
             overrideDefaultEmailVerification: true,
             async sendVerificationOTP({ email, otp, type }) {
-                const user = await prisma.user.findUnique({ where: { email } });
+                const user = await prisma_2.prisma.user.findUnique({ where: { email } });
                 if (!user) {
                     console.error(`User with email ${email} not found.`);
                     return;
                 }
                 if (type === "email-verification") {
-                    if (user.role === Role.OWNER) {
+                    if (user.role === enums_1.Role.OWNER) {
                         console.log(`Owner ${email} - skipping OTP.`);
                         return;
                     }
-                    await sendEmail({
+                    await (0, email_1.sendEmail)({
                         to: email,
                         subject: "Verify Your Email - Portfolio Server",
                         html: `<p>Hello ${user.name},</p><p>Your verification code is <strong>${otp}</strong>.</p><p>This code expires in 2 minutes.</p>`,
                     });
                 }
                 if (type === "forget-password") {
-                    await sendEmail({
+                    await (0, email_1.sendEmail)({
                         to: email,
                         subject: "Reset Your Password - Portfolio Server",
                         html: `<p>Hello ${user.name},</p><p>Your password reset code is <strong>${otp}</strong>.</p><p>This code expires in 2 minutes.</p>`,
@@ -58,7 +61,7 @@ export const auth = betterAuth({
             role: {
                 type: "string",
                 required: true,
-                defaultValue: Role.ADMIN,
+                defaultValue: enums_1.Role.ADMIN,
             },
             phone: {
                 type: "string",
@@ -68,11 +71,11 @@ export const auth = betterAuth({
         },
     },
     redirectURLs: {
-        signIn: `${envVars.BETTER_AUTH_URL}/api/v1/auth/google/success`,
+        signIn: `${env_1.envVars.BETTER_AUTH_URL}/api/v1/auth/google/success`,
     },
     trustedOrigins: [
         process.env.BETTER_AUTH_URL || "http://localhost:5000",
-        envVars.FRONTEND_URL,
+        env_1.envVars.FRONTEND_URL,
     ],
     session: {
         expiresIn: 60 * 60 * 60 * 24, // 1 day in seconds

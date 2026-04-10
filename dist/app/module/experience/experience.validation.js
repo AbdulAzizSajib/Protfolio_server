@@ -1,21 +1,27 @@
-import z from "zod";
-const optionalUrlField = z
-    .union([z.url(), z.literal("")])
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ExperienceValidation = exports.updateExperienceZodSchema = exports.createExperienceZodSchema = void 0;
+const zod_1 = __importDefault(require("zod"));
+const optionalUrlField = zod_1.default
+    .union([zod_1.default.url(), zod_1.default.literal("")])
     .optional()
     .transform((value) => (value === "" ? undefined : value));
-export const createExperienceZodSchema = z.object({
-    company: z.string().min(2).max(180),
-    role: z.string().min(2).max(180),
-    description: z.string().optional(),
+exports.createExperienceZodSchema = zod_1.default.object({
+    company: zod_1.default.string().min(2).max(180),
+    role: zod_1.default.string().min(2).max(180),
+    description: zod_1.default.string().optional(),
     logoUrl: optionalUrlField,
     companyUrl: optionalUrlField,
-    employmentType: z.string().max(180).optional(),
-    locationType: z.enum(["REMOTE", "ONSITE", "HYBRID"]).optional(),
-    startDate: z.string().datetime(),
-    endDate: z.string().datetime().optional(),
-    current: z.boolean().optional(),
-    sortOrder: z.number().int().optional(),
+    employmentType: zod_1.default.string().max(180).optional(),
+    locationType: zod_1.default.enum(["REMOTE", "ONSITE", "HYBRID"]).optional(),
+    startDate: zod_1.default.string().datetime(),
+    endDate: zod_1.default.string().datetime().optional(),
+    current: zod_1.default.boolean().optional(),
+    sortOrder: zod_1.default.number().int().optional(),
 });
-export const updateExperienceZodSchema = createExperienceZodSchema.partial();
-export const ExperienceValidation = { createExperienceZodSchema, updateExperienceZodSchema };
+exports.updateExperienceZodSchema = exports.createExperienceZodSchema.partial();
+exports.ExperienceValidation = { createExperienceZodSchema: exports.createExperienceZodSchema, updateExperienceZodSchema: exports.updateExperienceZodSchema };
 //# sourceMappingURL=experience.validation.js.map

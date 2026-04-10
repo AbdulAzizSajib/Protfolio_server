@@ -1,29 +1,35 @@
-import status from "http-status";
-import { catchAsync } from "../../shared/catchAsync";
-import { sendResponse } from "../../shared/sendResponse";
-import { certificationService } from "./certification.service";
-const getAllCertifications = catchAsync(async (req, res) => {
-    const result = await certificationService.getAllCertifications(req.query);
-    sendResponse(res, { httpStatusCode: status.OK, success: true, message: "Certifications retrieved successfully", data: result.data, meta: result.meta });
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.certificationController = void 0;
+const http_status_1 = __importDefault(require("http-status"));
+const catchAsync_1 = require("../../shared/catchAsync");
+const sendResponse_1 = require("../../shared/sendResponse");
+const certification_service_1 = require("./certification.service");
+const getAllCertifications = (0, catchAsync_1.catchAsync)(async (req, res) => {
+    const result = await certification_service_1.certificationService.getAllCertifications(req.query);
+    (0, sendResponse_1.sendResponse)(res, { httpStatusCode: http_status_1.default.OK, success: true, message: "Certifications retrieved successfully", data: result.data, meta: result.meta });
 });
-const getCertificationById = catchAsync(async (req, res) => {
+const getCertificationById = (0, catchAsync_1.catchAsync)(async (req, res) => {
     const id = req.params.id;
-    const result = await certificationService.getCertificationById(id);
-    sendResponse(res, { httpStatusCode: status.OK, success: true, message: "Certification retrieved successfully", data: result });
+    const result = await certification_service_1.certificationService.getCertificationById(id);
+    (0, sendResponse_1.sendResponse)(res, { httpStatusCode: http_status_1.default.OK, success: true, message: "Certification retrieved successfully", data: result });
 });
-const createCertification = catchAsync(async (req, res) => {
-    const result = await certificationService.createCertification(req.body);
-    sendResponse(res, { httpStatusCode: status.CREATED, success: true, message: "Certification created successfully", data: result });
+const createCertification = (0, catchAsync_1.catchAsync)(async (req, res) => {
+    const result = await certification_service_1.certificationService.createCertification(req.body);
+    (0, sendResponse_1.sendResponse)(res, { httpStatusCode: http_status_1.default.CREATED, success: true, message: "Certification created successfully", data: result });
 });
-const updateCertification = catchAsync(async (req, res) => {
+const updateCertification = (0, catchAsync_1.catchAsync)(async (req, res) => {
     const id = req.params.id;
-    const result = await certificationService.updateCertification(id, req.body);
-    sendResponse(res, { httpStatusCode: status.OK, success: true, message: "Certification updated successfully", data: result });
+    const result = await certification_service_1.certificationService.updateCertification(id, req.body);
+    (0, sendResponse_1.sendResponse)(res, { httpStatusCode: http_status_1.default.OK, success: true, message: "Certification updated successfully", data: result });
 });
-const deleteCertification = catchAsync(async (req, res) => {
+const deleteCertification = (0, catchAsync_1.catchAsync)(async (req, res) => {
     const id = req.params.id;
-    const result = await certificationService.deleteCertification(id);
-    sendResponse(res, { httpStatusCode: status.OK, success: true, message: "Certification deleted successfully", data: result });
+    const result = await certification_service_1.certificationService.deleteCertification(id);
+    (0, sendResponse_1.sendResponse)(res, { httpStatusCode: http_status_1.default.OK, success: true, message: "Certification deleted successfully", data: result });
 });
-export const certificationController = { getAllCertifications, getCertificationById, createCertification, updateCertification, deleteCertification };
+exports.certificationController = { getAllCertifications, getCertificationById, createCertification, updateCertification, deleteCertification };
 //# sourceMappingURL=certification.controller.js.map

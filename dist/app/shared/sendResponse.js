@@ -1,4 +1,7 @@
-export const sendResponse = (res, responseData) => {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.sendResponse = void 0;
+const sendResponse = (res, responseData) => {
     const { httpStatusCode, success, message, data, meta } = responseData;
     res.status(httpStatusCode).json({
         success,
@@ -7,4 +10,5 @@ export const sendResponse = (res, responseData) => {
         meta,
     });
 };
+exports.sendResponse = sendResponse;
 //# sourceMappingURL=sendResponse.js.map

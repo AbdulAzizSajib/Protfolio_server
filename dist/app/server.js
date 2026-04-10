@@ -1,20 +1,25 @@
-import { createServer } from "node:http";
-import app from "./app";
-import { envVars } from "./config/env";
-import { prisma } from "./lib/prisma";
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const node_http_1 = require("node:http");
+const app_1 = __importDefault(require("./app"));
+const env_1 = require("./config/env");
+const prisma_1 = require("./lib/prisma");
 let server;
 async function main() {
     try {
-        await prisma.$connect();
+        await prisma_1.prisma.$connect();
         console.log("Database connected successfully.");
-        server = createServer(app);
-        server.listen(envVars.PORT, () => {
-            console.log(`Server is running on port ${envVars.PORT}`);
+        server = (0, node_http_1.createServer)(app_1.default);
+        server.listen(env_1.envVars.PORT, () => {
+            console.log(`Server is running on port ${env_1.envVars.PORT}`);
         });
     }
     catch (error) {
         console.error("Error during server startup:", error);
-        await prisma.$disconnect();
+        await prisma_1.prisma.$disconnect();
         process.exit(1);
     }
 }
