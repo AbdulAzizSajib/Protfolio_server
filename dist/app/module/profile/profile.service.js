@@ -1,15 +1,9 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.profileService = void 0;
-const http_status_1 = __importDefault(require("http-status"));
-const AppError_1 = __importDefault(require("../../errorHelpers/AppError"));
-const cloudinary_config_1 = require("../../config/cloudinary.config");
-const prisma_1 = require("../../lib/prisma");
+import status from "http-status";
+import AppError from "../../errorHelpers/AppError.js";
+import { deleteFileFromCloudinary, uploadFileToCloudinary } from "../../config/cloudinary.config.js";
+import { prisma } from "../../lib/prisma.js";
 const getPublicProfile = async () => {
-    const profile = await prisma_1.prisma.profile.findFirst({
+    const profile = await prisma.profile.findFirst({
         include: {
             user: {
                 select: {
@@ -21,40 +15,40 @@ const getPublicProfile = async () => {
         },
     });
     if (!profile) {
-        throw new AppError_1.default(http_status_1.default.NOT_FOUND, "Public profile not found");
+        throw new AppError(status.NOT_FOUND, "Public profile not found");
     }
     return profile;
 };
 const getMyProfile = async (userId) => {
-    const profile = await prisma_1.prisma.profile.findUnique({ where: { userId } });
+    const profile = await prisma.profile.findUnique({ where: { userId } });
     if (!profile) {
-        return prisma_1.prisma.profile.create({
+        return prisma.profile.create({
             data: { userId },
         });
     }
     return profile;
 };
 const updateMyProfile = async (userId, payload, file) => {
-    const existingProfile = await prisma_1.prisma.profile.findUnique({ where: { userId } });
+    const existingProfile = await prisma.profile.findUnique({ where: { userId } });
     const updateData = { ...payload };
     if (file) {
         if (existingProfile?.avatarUrl) {
-            await (0, cloudinary_config_1.deleteFileFromCloudinary)(existingProfile.avatarUrl);
+            await deleteFileFromCloudinary(existingProfile.avatarUrl);
         }
-        const uploaded = await (0, cloudinary_config_1.uploadFileToCloudinary)(file.buffer, file.originalname);
+        const uploaded = await uploadFileToCloudinary(file.buffer, file.originalname);
         updateData.avatarUrl = uploaded.secure_url;
     }
-    const profile = await prisma_1.prisma.profile.upsert({
+    const profile = await prisma.profile.upsert({
         where: { userId },
         create: { userId, ...updateData },
         update: updateData,
     });
     if (!profile) {
-        throw new AppError_1.default(http_status_1.default.NOT_FOUND, "Profile not found");
+        throw new AppError(status.NOT_FOUND, "Profile not found");
     }
     return profile;
 };
-exports.profileService = {
+export const profileService = {
     getPublicProfile,
     getMyProfile,
     updateMyProfile,

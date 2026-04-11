@@ -1,38 +1,32 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.handlerPrismaClientRustPanicError = exports.handlerPrismaClientInitializationError = exports.handlePrismaClientValidationError = exports.handlePrismaClientUnknownError = exports.handlePrismaClientKnownRequestError = void 0;
-const http_status_1 = __importDefault(require("http-status"));
+import status from "http-status";
 const getStatusCodeFromPrismaError = (errorCode) => {
     //P2002: Unique constraint failed
     if (errorCode === "P2002") {
-        return http_status_1.default.CONFLICT;
+        return status.CONFLICT;
     }
     // P2025, P2001, P2015, P2018 : Not Found errors
     if (["P2025", "P2001", "P2015", "P2018"].includes(errorCode)) {
-        return http_status_1.default.NOT_FOUND;
+        return status.NOT_FOUND;
     }
     // P1000 , P6002 : DB Authentication errors = 401 Unauthorized
     if (["P1000", "P6002"].includes(errorCode)) {
-        return http_status_1.default.UNAUTHORIZED;
+        return status.UNAUTHORIZED;
     }
     // P1010 , P6010 : Access denied errors = 403 Forbidden
     if (["P1010", "P6010"].includes(errorCode)) {
-        return http_status_1.default.FORBIDDEN;
+        return status.FORBIDDEN;
     }
     // P6003 : Prisma Accelararate Plan limit exceeded = 402 Payment Required
     if (errorCode === "P6003") {
-        return http_status_1.default.PAYMENT_REQUIRED;
+        return status.PAYMENT_REQUIRED;
     }
     // P1008, 2004, 6004 : Timeout errors = 504 Gateway Timeout
     if (["P1008", "P2004", "P6004"].includes(errorCode)) {
-        return http_status_1.default.GATEWAY_TIMEOUT;
+        return status.GATEWAY_TIMEOUT;
     }
     // P5011 : Rate Limit Exceeded = 429 Too Many Requests
     if (errorCode === "P5011") {
-        return http_status_1.default.TOO_MANY_REQUESTS;
+        return status.TOO_MANY_REQUESTS;
     }
     // P6009 Response size limit exceeded = 413 Payload Too Large
     if (errorCode === "P6009") {
@@ -41,17 +35,17 @@ const getStatusCodeFromPrismaError = (errorCode) => {
     // P1xxx , P2024, P2037, P6008 : Connection errors
     if (errorCode.startsWith("P1") ||
         ["P2024", "P2037", "P6008"].includes(errorCode)) {
-        return http_status_1.default.SERVICE_UNAVAILABLE;
+        return status.SERVICE_UNAVAILABLE;
     }
     // P2XXX : except unhandled errors, Bad Request
     if (errorCode.startsWith("P2")) {
-        return http_status_1.default.BAD_REQUEST;
+        return status.BAD_REQUEST;
     }
     // P3XXX, P4XXX : Internal Server Errors
     if (errorCode.startsWith("P3") || errorCode.startsWith("P4")) {
-        return http_status_1.default.INTERNAL_SERVER_ERROR;
+        return status.INTERNAL_SERVER_ERROR;
     }
-    return http_status_1.default.INTERNAL_SERVER_ERROR;
+    return status.INTERNAL_SERVER_ERROR;
 };
 const formatErrorMeta = (meta) => {
     if (!meta)
@@ -103,7 +97,7 @@ const extractConstraintFields = (meta) => {
     }
     return [];
 };
-const handlePrismaClientKnownRequestError = (error) => {
+export const handlePrismaClientKnownRequestError = (error) => {
     const statusCode = getStatusCodeFromPrismaError(error.code);
     const metaInfo = formatErrorMeta(error.meta);
     if (error.code === "P2002") {
@@ -146,8 +140,7 @@ const handlePrismaClientKnownRequestError = (error) => {
         errorSources,
     };
 };
-exports.handlePrismaClientKnownRequestError = handlePrismaClientKnownRequestError;
-const handlePrismaClientUnknownError = (error) => {
+export const handlePrismaClientUnknownError = (error) => {
     let cleanMessage = error.message;
     // Remove the "Invalid `prisma.user.create()` invocation: " part from the message for better readability
     cleanMessage = cleanMessage.replace(/Invalid `.*?` invocation:?\s*/i, "");
@@ -161,13 +154,12 @@ const handlePrismaClientUnknownError = (error) => {
     ];
     return {
         success: false,
-        statusCode: http_status_1.default.INTERNAL_SERVER_ERROR,
+        statusCode: status.INTERNAL_SERVER_ERROR,
         message: `Prisma Client Unknown Request Error: ${mainMessage}`,
         errorSources,
     };
 };
-exports.handlePrismaClientUnknownError = handlePrismaClientUnknownError;
-const handlePrismaClientValidationError = (error) => {
+export const handlePrismaClientValidationError = (error) => {
     let cleanMessage = error.message;
     // Remove the "Invalid `prisma.user.create()` invocation: " part from the message for better readability
     cleanMessage = cleanMessage.replace(/Invalid `.*?` invocation:?\s*/i, "");
@@ -187,16 +179,15 @@ const handlePrismaClientValidationError = (error) => {
     });
     return {
         success: false,
-        statusCode: http_status_1.default.BAD_REQUEST,
+        statusCode: status.BAD_REQUEST,
         message: `Prisma Client Validation Error: ${mainMessage}`,
         errorSources,
     };
 };
-exports.handlePrismaClientValidationError = handlePrismaClientValidationError;
-const handlerPrismaClientInitializationError = (error) => {
+export const handlerPrismaClientInitializationError = (error) => {
     const statusCode = error.errorCode
         ? getStatusCodeFromPrismaError(error.errorCode)
-        : http_status_1.default.SERVICE_UNAVAILABLE;
+        : status.SERVICE_UNAVAILABLE;
     const cleanMessage = error.message;
     cleanMessage.replace(/Invalid `.*?` invocation:?\s*/i, "");
     const lines = cleanMessage.split("\n").filter((line) => line.trim());
@@ -214,8 +205,7 @@ const handlerPrismaClientInitializationError = (error) => {
         errorSources,
     };
 };
-exports.handlerPrismaClientInitializationError = handlerPrismaClientInitializationError;
-const handlerPrismaClientRustPanicError = () => {
+export const handlerPrismaClientRustPanicError = () => {
     const errorSources = [
         {
             path: "Rust Engine Crashed",
@@ -224,10 +214,9 @@ const handlerPrismaClientRustPanicError = () => {
     ];
     return {
         success: false,
-        statusCode: http_status_1.default.INTERNAL_SERVER_ERROR,
+        statusCode: status.INTERNAL_SERVER_ERROR,
         message: "Prisma Client Rust Panic Error: The database engine crashed due to a fatal error.",
         errorSources,
     };
 };
-exports.handlerPrismaClientRustPanicError = handlerPrismaClientRustPanicError;
 //# sourceMappingURL=handlePrismaErrors.js.map

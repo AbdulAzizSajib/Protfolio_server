@@ -1,19 +1,13 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.authService = void 0;
-const http_status_1 = __importDefault(require("http-status"));
-const AppError_1 = __importDefault(require("../../errorHelpers/AppError"));
-const auth_1 = require("../../lib/auth");
-const prisma_1 = require("../../lib/prisma");
-const token_1 = require("../../utils/token");
-const jwt_1 = require("../../utils/jwt");
-const env_1 = require("../../config/env");
+import status from "http-status";
+import AppError from "../../errorHelpers/AppError.js";
+import { auth } from "../../lib/auth.js";
+import { prisma } from "../../lib/prisma.js";
+import { tokenUtils } from "../../utils/token.js";
+import { jwtUtils } from "../../utils/jwt.js";
+import { envVars } from "../../config/env.js";
 const registerUser = async (payload) => {
     const { name, email, password } = payload;
-    const data = await auth_1.auth.api.signUpEmail({
+    const data = await auth.api.signUpEmail({
         body: {
             name,
             email,
@@ -21,7 +15,7 @@ const registerUser = async (payload) => {
         },
     });
     if (!data.user) {
-        throw new AppError_1.default(http_status_1.default.BAD_REQUEST, "Failed to register user");
+        throw new AppError(status.BAD_REQUEST, "Failed to register user");
     }
     // Don't generate tokens yet — user needs to verify email first
     return {
@@ -36,7 +30,7 @@ const registerUser = async (payload) => {
 };
 const loginUser = async (payload) => {
     const { email, password } = payload;
-    const data = await auth_1.auth.api.signInEmail({
+    const data = await auth.api.signInEmail({
         body: {
             email,
             password,
@@ -53,14 +47,14 @@ const loginUser = async (payload) => {
             requiresEmailVerification: true,
         };
     }
-    const accessToken = token_1.tokenUtils.getAccessToken({
+    const accessToken = tokenUtils.getAccessToken({
         userId: data.user.id,
         email: data.user.email,
         name: data.user.name,
         role: data.user.role,
         emailVerified: data.user.emailVerified,
     });
-    const refreshToken = token_1.tokenUtils.getRefreshToken({
+    const refreshToken = tokenUtils.getRefreshToken({
         userId: data.user.id,
         email: data.user.email,
         name: data.user.name,
@@ -74,20 +68,20 @@ const loginUser = async (payload) => {
     };
 };
 const getMe = async (user) => {
-    const isUserExist = await prisma_1.prisma.user.findUnique({
+    const isUserExist = await prisma.user.findUnique({
         where: { id: user.userId },
         include: {
             profile: true,
         },
     });
     if (!isUserExist) {
-        throw new AppError_1.default(http_status_1.default.NOT_FOUND, "User not found");
+        throw new AppError(status.NOT_FOUND, "User not found");
     }
     return isUserExist;
 };
 const getNewToken = async (refreshToken, sessionToken) => {
     // Try exact match first, then decoded/encoded variants
-    let isSessionExits = await prisma_1.prisma.session.findUnique({
+    let isSessionExits = await prisma.session.findUnique({
         where: { token: sessionToken },
     });
     // Fallback: try decoded version (Google login may URL-encode the token)
@@ -95,7 +89,7 @@ const getNewToken = async (refreshToken, sessionToken) => {
         try {
             const decoded = decodeURIComponent(sessionToken);
             if (decoded !== sessionToken) {
-                isSessionExits = await prisma_1.prisma.session.findUnique({
+                isSessionExits = await prisma.session.findUnique({
                     where: { token: decoded },
                 });
             }
@@ -105,14 +99,14 @@ const getNewToken = async (refreshToken, sessionToken) => {
         }
     }
     if (!isSessionExits) {
-        throw new AppError_1.default(http_status_1.default.UNAUTHORIZED, "Invalid session token");
+        throw new AppError(status.UNAUTHORIZED, "Invalid session token");
     }
-    const verifiedRefreshToken = jwt_1.jwtUtils.verifyToken(refreshToken, env_1.envVars.REFRESH_TOKEN_SECRET);
+    const verifiedRefreshToken = jwtUtils.verifyToken(refreshToken, envVars.REFRESH_TOKEN_SECRET);
     if (!verifiedRefreshToken.success && verifiedRefreshToken.error) {
-        throw new AppError_1.default(http_status_1.default.UNAUTHORIZED, "Invalid refresh token");
+        throw new AppError(status.UNAUTHORIZED, "Invalid refresh token");
     }
     const data = verifiedRefreshToken.data;
-    const newAccessToken = token_1.tokenUtils.getAccessToken({
+    const newAccessToken = tokenUtils.getAccessToken({
         userId: data.userId,
         email: data.email,
         name: data.name,
@@ -121,7 +115,7 @@ const getNewToken = async (refreshToken, sessionToken) => {
         isDeleted: data.isDeleted,
         emailVerified: data.emailVerified,
     });
-    const newRefreshToken = token_1.tokenUtils.getRefreshToken({
+    const newRefreshToken = tokenUtils.getRefreshToken({
         userId: data.userId,
         email: data.email,
         name: data.name,
@@ -130,7 +124,7 @@ const getNewToken = async (refreshToken, sessionToken) => {
         isDeleted: data.isDeleted,
         emailVerified: data.emailVerified,
     });
-    const sessionUpdateData = await prisma_1.prisma.session.update({
+    const sessionUpdateData = await prisma.session.update({
         where: {
             token: sessionToken,
         },
@@ -147,16 +141,16 @@ const getNewToken = async (refreshToken, sessionToken) => {
     };
 };
 const changePassword = async (payload, sessionToken) => {
-    const session = await auth_1.auth.api.getSession({
+    const session = await auth.api.getSession({
         headers: new Headers({
             Cookie: `better-auth.session_token=${sessionToken}`,
         }),
     });
     if (!session) {
-        throw new AppError_1.default(http_status_1.default.UNAUTHORIZED, "Invalid session token");
+        throw new AppError(status.UNAUTHORIZED, "Invalid session token");
     }
     const { currentPassword, newPassword } = payload;
-    const result = await auth_1.auth.api.changePassword({
+    const result = await auth.api.changePassword({
         body: {
             currentPassword,
             newPassword,
@@ -166,14 +160,14 @@ const changePassword = async (payload, sessionToken) => {
             Cookie: `better-auth.session_token=${sessionToken}`,
         }),
     });
-    const accessToken = token_1.tokenUtils.getAccessToken({
+    const accessToken = tokenUtils.getAccessToken({
         userId: session.user.id,
         role: session.user.role,
         name: session.user.name,
         email: session.user.email,
         emailVerified: session.user.emailVerified,
     });
-    const refreshToken = token_1.tokenUtils.getRefreshToken({
+    const refreshToken = tokenUtils.getRefreshToken({
         userId: session.user.id,
         role: session.user.role,
         name: session.user.name,
@@ -187,7 +181,7 @@ const changePassword = async (payload, sessionToken) => {
     };
 };
 const logoutUser = async (sessionToken) => {
-    const result = await auth_1.auth.api.signOut({
+    const result = await auth.api.signOut({
         headers: new Headers({
             Cookie: `better-auth.session_token=${sessionToken}`,
         }),
@@ -195,14 +189,14 @@ const logoutUser = async (sessionToken) => {
     return result;
 };
 const verifyEmail = async (email, otp) => {
-    const result = await auth_1.auth.api.verifyEmailOTP({
+    const result = await auth.api.verifyEmailOTP({
         body: {
             email,
             otp,
         },
     });
     if (result.status && !result.user.emailVerified) {
-        await prisma_1.prisma.user.update({
+        await prisma.user.update({
             where: {
                 email,
             },
@@ -213,36 +207,36 @@ const verifyEmail = async (email, otp) => {
     }
 };
 const forgetPassword = async (email) => {
-    const isUserExist = await prisma_1.prisma.user.findUnique({
+    const isUserExist = await prisma.user.findUnique({
         where: {
             email,
         },
     });
     if (!isUserExist) {
-        throw new AppError_1.default(http_status_1.default.NOT_FOUND, "User not found");
+        throw new AppError(status.NOT_FOUND, "User not found");
     }
     if (!isUserExist.emailVerified) {
-        throw new AppError_1.default(http_status_1.default.BAD_REQUEST, "Email not verified");
+        throw new AppError(status.BAD_REQUEST, "Email not verified");
     }
-    await auth_1.auth.api.requestPasswordResetEmailOTP({
+    await auth.api.requestPasswordResetEmailOTP({
         body: {
             email,
         },
     });
 };
 const resetPassword = async (email, otp, newPassword) => {
-    const isUserExist = await prisma_1.prisma.user.findUnique({
+    const isUserExist = await prisma.user.findUnique({
         where: {
             email,
         },
     });
     if (!isUserExist) {
-        throw new AppError_1.default(http_status_1.default.NOT_FOUND, "User not found");
+        throw new AppError(status.NOT_FOUND, "User not found");
     }
     if (!isUserExist.emailVerified) {
-        throw new AppError_1.default(http_status_1.default.BAD_REQUEST, "Email not verified");
+        throw new AppError(status.BAD_REQUEST, "Email not verified");
     }
-    await auth_1.auth.api.resetPasswordEmailOTP({
+    await auth.api.resetPasswordEmailOTP({
         body: {
             email,
             otp,
@@ -250,21 +244,21 @@ const resetPassword = async (email, otp, newPassword) => {
         },
     });
     // No extra post-reset user flags in current portfolio schema.
-    await prisma_1.prisma.session.deleteMany({
+    await prisma.session.deleteMany({
         where: {
             userId: isUserExist.id,
         },
     });
 };
 const resendOTP = async (email, type) => {
-    const user = await prisma_1.prisma.user.findUnique({ where: { email } });
+    const user = await prisma.user.findUnique({ where: { email } });
     if (!user) {
-        throw new AppError_1.default(http_status_1.default.NOT_FOUND, "User not found");
+        throw new AppError(status.NOT_FOUND, "User not found");
     }
     if (type === "email-verification" && user.emailVerified) {
-        throw new AppError_1.default(http_status_1.default.BAD_REQUEST, "Email is already verified");
+        throw new AppError(status.BAD_REQUEST, "Email is already verified");
     }
-    await auth_1.auth.api.sendVerificationOTP({
+    await auth.api.sendVerificationOTP({
         body: {
             email,
             type,
@@ -273,14 +267,14 @@ const resendOTP = async (email, type) => {
 };
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const googleLoginSuccess = async (session) => {
-    const accessToken = token_1.tokenUtils.getAccessToken({
+    const accessToken = tokenUtils.getAccessToken({
         userId: session.user.id,
         role: session.user.role,
         name: session.user.name,
         email: session.user.email,
         emailVerified: session.user.emailVerified,
     });
-    const refreshToken = token_1.tokenUtils.getRefreshToken({
+    const refreshToken = tokenUtils.getRefreshToken({
         userId: session.user.id,
         role: session.user.role,
         name: session.user.name,
@@ -292,7 +286,7 @@ const googleLoginSuccess = async (session) => {
         refreshToken,
     };
 };
-exports.authService = {
+export const authService = {
     registerUser,
     loginUser,
     getMe,

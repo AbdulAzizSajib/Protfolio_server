@@ -1,15 +1,9 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.categoryService = void 0;
-const http_status_1 = __importDefault(require("http-status"));
-const AppError_1 = __importDefault(require("../../errorHelpers/AppError"));
-const prisma_1 = require("../../lib/prisma");
-const pagination_1 = require("../../utils/pagination");
+import status from "http-status";
+import AppError from "../../errorHelpers/AppError.js";
+import { prisma } from "../../lib/prisma.js";
+import { getPaginationOptions } from "../../utils/pagination.js";
 const getAllCategories = async (query) => {
-    const { page, limit, skip, sortBy, sortOrder, searchTerm } = (0, pagination_1.getPaginationOptions)(query);
+    const { page, limit, skip, sortBy, sortOrder, searchTerm } = getPaginationOptions(query);
     const where = searchTerm
         ? {
             OR: [
@@ -19,13 +13,13 @@ const getAllCategories = async (query) => {
         }
         : {};
     const [data, total] = await Promise.all([
-        prisma_1.prisma.category.findMany({
+        prisma.category.findMany({
             where,
             skip,
             take: limit,
             orderBy: { [sortBy]: sortOrder },
         }),
-        prisma_1.prisma.category.count({ where }),
+        prisma.category.count({ where }),
     ]);
     return {
         data,
@@ -33,13 +27,13 @@ const getAllCategories = async (query) => {
     };
 };
 const getCategoryById = async (id) => {
-    const category = await prisma_1.prisma.category.findUnique({ where: { id } });
+    const category = await prisma.category.findUnique({ where: { id } });
     if (!category)
-        throw new AppError_1.default(http_status_1.default.NOT_FOUND, "Category not found");
+        throw new AppError(status.NOT_FOUND, "Category not found");
     return category;
 };
-const createCategory = async (payload) => prisma_1.prisma.category.create({ data: payload });
-const updateCategory = async (id, payload) => prisma_1.prisma.category.update({ where: { id }, data: payload });
-const deleteCategory = async (id) => prisma_1.prisma.category.delete({ where: { id } });
-exports.categoryService = { getAllCategories, getCategoryById, createCategory, updateCategory, deleteCategory };
+const createCategory = async (payload) => prisma.category.create({ data: payload });
+const updateCategory = async (id, payload) => prisma.category.update({ where: { id }, data: payload });
+const deleteCategory = async (id) => prisma.category.delete({ where: { id } });
+export const categoryService = { getAllCategories, getCategoryById, createCategory, updateCategory, deleteCategory };
 //# sourceMappingURL=category.service.js.map

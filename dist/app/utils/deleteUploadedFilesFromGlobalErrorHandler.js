@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUploadedFilesFromGlobalErrorHandler = void 0;
-const cloudinary_config_1 = require("../config/cloudinary.config");
+import { deleteFileFromCloudinary } from "../config/cloudinary.config.js";
 /**
  * Cleans up uploaded files from Cloudinary when an error occurs.
  *
@@ -10,7 +7,7 @@ const cloudinary_config_1 = require("../config/cloudinary.config");
  * 2. memoryStorage — files are uploaded manually in service layer,
  *    and the Cloudinary URL is stored in `req.cloudinaryUrls` by the service if needed.
  */
-const deleteUploadedFilesFromGlobalErrorHandler = async (req) => {
+export const deleteUploadedFilesFromGlobalErrorHandler = async (req) => {
     try {
         const requestWithUploads = req;
         const filesToDelete = [];
@@ -42,7 +39,7 @@ const deleteUploadedFilesFromGlobalErrorHandler = async (req) => {
             });
         }
         if (filesToDelete.length > 0) {
-            await Promise.all(filesToDelete.map((url) => (0, cloudinary_config_1.deleteFileFromCloudinary)(url)));
+            await Promise.all(filesToDelete.map((url) => deleteFileFromCloudinary(url)));
             console.log(`Deleted ${filesToDelete.length} uploaded file(s) from Cloudinary due to error.`);
         }
     }
@@ -50,5 +47,4 @@ const deleteUploadedFilesFromGlobalErrorHandler = async (req) => {
         console.error("Error deleting uploaded files from Global Error Handler:", error.message);
     }
 };
-exports.deleteUploadedFilesFromGlobalErrorHandler = deleteUploadedFilesFromGlobalErrorHandler;
 //# sourceMappingURL=deleteUploadedFilesFromGlobalErrorHandler.js.map

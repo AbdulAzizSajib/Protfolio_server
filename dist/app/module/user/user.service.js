@@ -1,25 +1,19 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.userService = void 0;
-const http_status_1 = __importDefault(require("http-status"));
-const AppError_1 = __importDefault(require("../../errorHelpers/AppError"));
-const auth_1 = require("../../lib/auth");
-const prisma_1 = require("../../lib/prisma");
-const cloudinary_config_1 = require("../../config/cloudinary.config");
+import status from "http-status";
+import AppError from "../../errorHelpers/AppError.js";
+import { auth } from "../../lib/auth.js";
+import { prisma } from "../../lib/prisma.js";
+import { deleteFileFromCloudinary, uploadFileToCloudinary, } from "../../config/cloudinary.config.js";
 const createAdmin = async (payload) => {
-    const userExists = await prisma_1.prisma.user.findUnique({
+    const userExists = await prisma.user.findUnique({
         where: {
             email: payload.admin.email,
         },
     });
     if (userExists) {
-        throw new AppError_1.default(http_status_1.default.CONFLICT, "User with this email already exists");
+        throw new AppError(status.CONFLICT, "User with this email already exists");
     }
     const { admin, role, password } = payload;
-    const userData = await auth_1.auth.api.signUpEmail({
+    const userData = await auth.api.signUpEmail({
         body: {
             ...admin,
             password,
@@ -35,11 +29,11 @@ const createAdmin = async (payload) => {
     };
 };
 const updateProfile = async (userId, payload, file) => {
-    const user = await prisma_1.prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
         where: { id: userId },
     });
     if (!user) {
-        throw new AppError_1.default(http_status_1.default.NOT_FOUND, "User not found");
+        throw new AppError(status.NOT_FOUND, "User not found");
     }
     const updateData = {
         ...payload,
@@ -47,35 +41,35 @@ const updateProfile = async (userId, payload, file) => {
     if (file) {
         // Delete old image if exists
         if (user.image) {
-            await (0, cloudinary_config_1.deleteFileFromCloudinary)(user.image);
+            await deleteFileFromCloudinary(user.image);
         }
-        const uploaded = await (0, cloudinary_config_1.uploadFileToCloudinary)(file.buffer, file.originalname);
+        const uploaded = await uploadFileToCloudinary(file.buffer, file.originalname);
         updateData.image = uploaded.secure_url;
     }
-    const updatedUser = await prisma_1.prisma.user.update({
+    const updatedUser = await prisma.user.update({
         where: { id: userId },
         data: updateData,
     });
     return updatedUser;
 };
 const getMyDashboard = async (userId) => {
-    const user = await prisma_1.prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
         where: { id: userId },
         include: {
             profile: true,
         },
     });
     if (!user) {
-        throw new AppError_1.default(http_status_1.default.NOT_FOUND, "User not found");
+        throw new AppError(status.NOT_FOUND, "User not found");
     }
     const [projectsCount, featuredProjectsCount, testimonialsCount, approvedTestimonialsCount, contactMessagesCount, unreadContactMessagesCount, postsCount,] = await Promise.all([
-        prisma_1.prisma.project.count(),
-        prisma_1.prisma.project.count({ where: { featured: true } }),
-        prisma_1.prisma.testimonial.count(),
-        prisma_1.prisma.testimonial.count({ where: { approved: true } }),
-        prisma_1.prisma.contactMessage.count(),
-        prisma_1.prisma.contactMessage.count({ where: { status: "UNREAD" } }),
-        prisma_1.prisma.post.count(),
+        prisma.project.count(),
+        prisma.project.count({ where: { featured: true } }),
+        prisma.testimonial.count(),
+        prisma.testimonial.count({ where: { approved: true } }),
+        prisma.contactMessage.count(),
+        prisma.contactMessage.count({ where: { status: "UNREAD" } }),
+        prisma.post.count(),
     ]);
     return {
         user,
@@ -91,7 +85,7 @@ const getMyDashboard = async (userId) => {
         profile: user?.profile ?? null,
     };
 };
-exports.userService = {
+export const userService = {
     createAdmin,
     updateProfile,
     getMyDashboard,

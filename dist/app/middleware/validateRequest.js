@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateRequest = void 0;
-const validateRequest = (zodSchema) => {
+export const validateRequest = (zodSchema) => {
     return (req, res, next) => {
         const parsedResult = zodSchema.safeParse(req.body);
         if (!parsedResult.success) {
@@ -12,5 +9,4 @@ const validateRequest = (zodSchema) => {
         return next();
     };
 };
-exports.validateRequest = validateRequest;
 //# sourceMappingURL=validateRequest.js.map

@@ -1,23 +1,20 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.tokenUtils = void 0;
-const jwt_1 = require("./jwt");
-const env_1 = require("../config/env");
-const cookie_1 = require("./cookie");
+import { jwtUtils } from "./jwt.js";
+import { envVars } from "../config/env.js";
+import { CookieUtils } from "./cookie.js";
 const getAccessToken = (payload) => {
-    const accessToken = jwt_1.jwtUtils.createToken(payload, env_1.envVars.ACCESS_TOKEN_SECRET, {
-        expiresIn: env_1.envVars.ACCESS_TOKEN_EXPIRES_IN,
+    const accessToken = jwtUtils.createToken(payload, envVars.ACCESS_TOKEN_SECRET, {
+        expiresIn: envVars.ACCESS_TOKEN_EXPIRES_IN,
     });
     return accessToken;
 };
 const getRefreshToken = (payload) => {
-    const refreshToken = jwt_1.jwtUtils.createToken(payload, env_1.envVars.REFRESH_TOKEN_SECRET, {
-        expiresIn: env_1.envVars.REFRESH_TOKEN_EXPIRES_IN,
+    const refreshToken = jwtUtils.createToken(payload, envVars.REFRESH_TOKEN_SECRET, {
+        expiresIn: envVars.REFRESH_TOKEN_EXPIRES_IN,
     });
     return refreshToken;
 };
 const setAccessTokenCookie = (res, token) => {
-    cookie_1.CookieUtils.setCookie(res, "accessToken", token, {
+    CookieUtils.setCookie(res, "accessToken", token, {
         httpOnly: true,
         secure: true,
         sameSite: "none",
@@ -27,7 +24,7 @@ const setAccessTokenCookie = (res, token) => {
     });
 };
 const setRefreshTokenCookie = (res, token) => {
-    cookie_1.CookieUtils.setCookie(res, "refreshToken", token, {
+    CookieUtils.setCookie(res, "refreshToken", token, {
         httpOnly: true,
         secure: true,
         sameSite: "none",
@@ -37,7 +34,7 @@ const setRefreshTokenCookie = (res, token) => {
     });
 };
 const setBetterAuthSessionCookie = (res, token) => {
-    cookie_1.CookieUtils.setCookie(res, "better-auth.session_token", token, {
+    CookieUtils.setCookie(res, "better-auth.session_token", token, {
         httpOnly: true,
         secure: true,
         sameSite: "none",
@@ -46,7 +43,7 @@ const setBetterAuthSessionCookie = (res, token) => {
         maxAge: 60 * 60 * 24 * 1000,
     });
 };
-exports.tokenUtils = {
+export const tokenUtils = {
     getAccessToken,
     getRefreshToken,
     setAccessTokenCookie,

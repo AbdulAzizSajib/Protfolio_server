@@ -1,18 +1,12 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.jwtUtils = void 0;
 /* eslint-disable @typescript-eslint/no-explicit-any */
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+import jwt from "jsonwebtoken";
 const createToken = (payload, secret, options) => {
-    const token = jsonwebtoken_1.default.sign(payload, secret, options.expiresIn ? { expiresIn: options.expiresIn } : {});
+    const token = jwt.sign(payload, secret, options.expiresIn ? { expiresIn: options.expiresIn } : {});
     return token;
 };
 const verifyToken = (token, secret) => {
     try {
-        const decoded = jsonwebtoken_1.default.verify(token, secret);
+        const decoded = jwt.verify(token, secret);
         return {
             success: true,
             data: decoded,
@@ -29,7 +23,7 @@ const verifyToken = (token, secret) => {
     }
 };
 const decodeToken = (token) => {
-    const decoded = jsonwebtoken_1.default.decode(token);
+    const decoded = jwt.decode(token);
     if (!decoded) {
         return {
             success: false,
@@ -41,7 +35,7 @@ const decodeToken = (token) => {
         data: decoded,
     };
 };
-exports.jwtUtils = {
+export const jwtUtils = {
     createToken,
     verifyToken,
     decodeToken,

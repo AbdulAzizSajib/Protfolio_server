@@ -1,13 +1,7 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.envVars = void 0;
-const dotenv_1 = __importDefault(require("dotenv"));
-const AppError_1 = __importDefault(require("../errorHelpers/AppError"));
-const http_status_1 = __importDefault(require("http-status"));
-dotenv_1.default.config();
+import dotenv from "dotenv";
+import AppError from "../errorHelpers/AppError.js";
+import status from "http-status";
+dotenv.config();
 const loadEnvVariables = () => {
     const requiredEnvVariable = [
         "PORT",
@@ -31,7 +25,7 @@ const loadEnvVariables = () => {
     ];
     requiredEnvVariable.forEach((variable) => {
         if (!process.env[variable]) {
-            throw new AppError_1.default(http_status_1.default.INTERNAL_SERVER_ERROR, `Missing required environment variable: ${variable}`);
+            throw new AppError(status.INTERNAL_SERVER_ERROR, `Missing required environment variable: ${variable}`);
         }
     });
     return {
@@ -59,5 +53,5 @@ const loadEnvVariables = () => {
         },
     };
 };
-exports.envVars = loadEnvVariables();
+export const envVars = loadEnvVariables();
 //# sourceMappingURL=env.js.map

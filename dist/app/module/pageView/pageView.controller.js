@@ -1,14 +1,8 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.pageViewController = void 0;
-const geoip_lite_1 = __importDefault(require("geoip-lite"));
-const http_status_1 = __importDefault(require("http-status"));
-const catchAsync_1 = require("../../shared/catchAsync");
-const sendResponse_1 = require("../../shared/sendResponse");
-const pageView_service_1 = require("./pageView.service");
+import geoip from "geoip-lite";
+import status from "http-status";
+import { catchAsync } from "../../shared/catchAsync.js";
+import { sendResponse } from "../../shared/sendResponse.js";
+import { pageViewService } from "./pageView.service.js";
 const getCountryFromHeaders = (req) => {
     const headerCandidates = [
         req.get("cf-ipcountry"),
@@ -53,41 +47,41 @@ const getClientIp = (req) => {
 const getCountryFromIp = (ip) => {
     if (!ip)
         return null;
-    const lookup = geoip_lite_1.default.lookup(ip);
+    const lookup = geoip.lookup(ip);
     return lookup?.country ?? null;
 };
-const getAllPageViews = (0, catchAsync_1.catchAsync)(async (req, res) => {
-    const result = await pageView_service_1.pageViewService.getAllPageViews(req.query);
-    (0, sendResponse_1.sendResponse)(res, { httpStatusCode: http_status_1.default.OK, success: true, message: "Page views retrieved successfully", data: result.data, meta: result.meta });
+const getAllPageViews = catchAsync(async (req, res) => {
+    const result = await pageViewService.getAllPageViews(req.query);
+    sendResponse(res, { httpStatusCode: status.OK, success: true, message: "Page views retrieved successfully", data: result.data, meta: result.meta });
 });
-const getPageViewById = (0, catchAsync_1.catchAsync)(async (req, res) => {
+const getPageViewById = catchAsync(async (req, res) => {
     const id = req.params.id;
-    const result = await pageView_service_1.pageViewService.getPageViewById(id);
-    (0, sendResponse_1.sendResponse)(res, { httpStatusCode: http_status_1.default.OK, success: true, message: "Page view retrieved successfully", data: result });
+    const result = await pageViewService.getPageViewById(id);
+    sendResponse(res, { httpStatusCode: status.OK, success: true, message: "Page view retrieved successfully", data: result });
 });
-const getPageViewsSummary = (0, catchAsync_1.catchAsync)(async (req, res) => {
-    const result = await pageView_service_1.pageViewService.getPageViewsSummary(req.query);
-    (0, sendResponse_1.sendResponse)(res, { httpStatusCode: http_status_1.default.OK, success: true, message: "Page view summary retrieved successfully", data: result });
+const getPageViewsSummary = catchAsync(async (req, res) => {
+    const result = await pageViewService.getPageViewsSummary(req.query);
+    sendResponse(res, { httpStatusCode: status.OK, success: true, message: "Page view summary retrieved successfully", data: result });
 });
-const createPageView = (0, catchAsync_1.catchAsync)(async (req, res) => {
+const createPageView = catchAsync(async (req, res) => {
     const clientIp = getClientIp(req);
     const country = getCountryFromHeaders(req) ?? getCountryFromIp(clientIp);
     const body = req.body;
-    const result = await pageView_service_1.pageViewService.createPageView({
+    const result = await pageViewService.createPageView({
         ...body,
         ip: clientIp,
         country,
         userAgent: typeof body.userAgent === "string" ? body.userAgent : req.get("user-agent"),
         referrer: typeof body.referrer === "string" ? body.referrer : req.get("referer"),
     });
-    (0, sendResponse_1.sendResponse)(res, { httpStatusCode: http_status_1.default.CREATED, success: true, message: "Page view created successfully", data: result });
+    sendResponse(res, { httpStatusCode: status.CREATED, success: true, message: "Page view created successfully", data: result });
 });
-const deletePageView = (0, catchAsync_1.catchAsync)(async (req, res) => {
+const deletePageView = catchAsync(async (req, res) => {
     const id = req.params.id;
-    const result = await pageView_service_1.pageViewService.deletePageView(id);
-    (0, sendResponse_1.sendResponse)(res, { httpStatusCode: http_status_1.default.OK, success: true, message: "Page view deleted successfully", data: result });
+    const result = await pageViewService.deletePageView(id);
+    sendResponse(res, { httpStatusCode: status.OK, success: true, message: "Page view deleted successfully", data: result });
 });
-exports.pageViewController = {
+export const pageViewController = {
     getAllPageViews,
     getPageViewById,
     getPageViewsSummary,
