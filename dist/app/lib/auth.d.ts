@@ -6,14 +6,14 @@ export declare const auth: import("better-auth").Auth<{
         id: "oauth-proxy";
         options: NoInfer<import("better-auth/plugins").OAuthProxyOptions>;
         endpoints: {
-            oAuthProxy: import("better-auth").StrictEndpoint<"/oauth-proxy-callback", {
+            oAuthProxy: import("better-call").StrictEndpoint<"/oauth-proxy-callback", {
                 method: "GET";
                 operationId: string;
                 query: import("zod").ZodObject<{
                     callbackURL: import("zod").ZodString;
                     profile: import("zod").ZodOptional<import("zod").ZodString>;
                 }, import("better-auth").$strip>;
-                use: ((inputContext: import("better-auth").MiddlewareInputContext<import("better-auth").MiddlewareOptions>) => Promise<void>)[];
+                use: ((inputContext: import("better-call").MiddlewareInputContext<import("better-call").MiddlewareOptions>) => Promise<void>)[];
                 metadata: {
                     openapi: {
                         operationId: string;
@@ -49,11 +49,11 @@ export declare const auth: import("better-auth").Auth<{
         hooks: {
             before: {
                 matcher(context: import("better-auth").HookEndpointContext): boolean;
-                handler: (inputContext: import("better-auth").MiddlewareInputContext<import("better-auth").MiddlewareOptions>) => Promise<void>;
+                handler: (inputContext: import("better-call").MiddlewareInputContext<import("better-call").MiddlewareOptions>) => Promise<void>;
             }[];
             after: {
                 matcher(context: import("better-auth").HookEndpointContext): boolean;
-                handler: (inputContext: import("better-auth").MiddlewareInputContext<import("better-auth").MiddlewareOptions>) => Promise<void>;
+                handler: (inputContext: import("better-call").MiddlewareInputContext<import("better-call").MiddlewareOptions>) => Promise<void>;
             }[];
         };
     }, {
@@ -61,7 +61,7 @@ export declare const auth: import("better-auth").Auth<{
         hooks: {
             before: {
                 matcher(context: import("better-auth").HookEndpointContext): boolean;
-                handler: (inputContext: import("better-auth").MiddlewareInputContext<import("better-auth").MiddlewareOptions>) => Promise<{
+                handler: (inputContext: import("better-call").MiddlewareInputContext<import("better-call").MiddlewareOptions>) => Promise<{
                     context: {
                         headers: Headers;
                     };
@@ -69,7 +69,7 @@ export declare const auth: import("better-auth").Auth<{
             }[];
             after: {
                 matcher(context: import("better-auth").HookEndpointContext): true;
-                handler: (inputContext: import("better-auth").MiddlewareInputContext<import("better-auth").MiddlewareOptions>) => Promise<void>;
+                handler: (inputContext: import("better-call").MiddlewareInputContext<import("better-call").MiddlewareOptions>) => Promise<void>;
             }[];
         };
         options: import("better-auth/plugins").BearerOptions | undefined;
@@ -87,7 +87,7 @@ export declare const auth: import("better-auth").Auth<{
             };
         } | undefined;
         endpoints: {
-            sendVerificationOTP: import("better-auth").StrictEndpoint<"/email-otp/send-verification-otp", {
+            sendVerificationOTP: import("better-call").StrictEndpoint<"/email-otp/send-verification-otp", {
                 method: "POST";
                 body: import("zod").ZodObject<{
                     email: import("zod").ZodString;
@@ -124,7 +124,7 @@ export declare const auth: import("better-auth").Auth<{
             }, {
                 success: boolean;
             }>;
-            createVerificationOTP: import("better-auth").StrictEndpoint<string, {
+            createVerificationOTP: import("better-call").StrictEndpoint<string, {
                 method: "POST";
                 body: import("zod").ZodObject<{
                     email: import("zod").ZodString;
@@ -154,7 +154,7 @@ export declare const auth: import("better-auth").Auth<{
                     };
                 };
             }, string>;
-            getVerificationOTP: import("better-auth").StrictEndpoint<string, {
+            getVerificationOTP: import("better-call").StrictEndpoint<string, {
                 method: "GET";
                 query: import("zod").ZodObject<{
                     email: import("zod").ZodString;
@@ -196,7 +196,7 @@ export declare const auth: import("better-auth").Auth<{
             } | {
                 otp: string;
             }>;
-            checkVerificationOTP: import("better-auth").StrictEndpoint<"/email-otp/check-verification-otp", {
+            checkVerificationOTP: import("better-call").StrictEndpoint<"/email-otp/check-verification-otp", {
                 method: "POST";
                 body: import("zod").ZodObject<{
                     email: import("zod").ZodString;
@@ -234,7 +234,7 @@ export declare const auth: import("better-auth").Auth<{
             }, {
                 success: boolean;
             }>;
-            verifyEmailOTP: import("better-auth").StrictEndpoint<"/email-otp/verify-email", {
+            verifyEmailOTP: import("better-call").StrictEndpoint<"/email-otp/verify-email", {
                 method: "POST";
                 body: import("zod").ZodObject<{
                     email: import("zod").ZodString;
@@ -298,7 +298,7 @@ export declare const auth: import("better-auth").Auth<{
                     image?: string | null | undefined;
                 } & Record<string, any>;
             }>;
-            signInEmailOTP: import("better-auth").StrictEndpoint<"/sign-in/email-otp", {
+            signInEmailOTP: import("better-call").StrictEndpoint<"/sign-in/email-otp", {
                 method: "POST";
                 body: import("zod").ZodIntersection<import("zod").ZodObject<{
                     email: import("zod").ZodString;
@@ -346,7 +346,7 @@ export declare const auth: import("better-auth").Auth<{
                     image?: string | null | undefined;
                 };
             }>;
-            requestPasswordResetEmailOTP: import("better-auth").StrictEndpoint<"/email-otp/request-password-reset", {
+            requestPasswordResetEmailOTP: import("better-call").StrictEndpoint<"/email-otp/request-password-reset", {
                 method: "POST";
                 body: import("zod").ZodObject<{
                     email: import("zod").ZodString;
@@ -378,7 +378,7 @@ export declare const auth: import("better-auth").Auth<{
             }, {
                 success: boolean;
             }>;
-            forgetPasswordEmailOTP: import("better-auth").StrictEndpoint<"/forget-password/email-otp", {
+            forgetPasswordEmailOTP: import("better-call").StrictEndpoint<"/forget-password/email-otp", {
                 method: "POST";
                 body: import("zod").ZodObject<{
                     email: import("zod").ZodString;
@@ -410,7 +410,7 @@ export declare const auth: import("better-auth").Auth<{
             }, {
                 success: boolean;
             }>;
-            resetPasswordEmailOTP: import("better-auth").StrictEndpoint<"/email-otp/reset-password", {
+            resetPasswordEmailOTP: import("better-call").StrictEndpoint<"/email-otp/reset-password", {
                 method: "POST";
                 body: import("zod").ZodObject<{
                     email: import("zod").ZodString;
@@ -443,13 +443,13 @@ export declare const auth: import("better-auth").Auth<{
             }, {
                 success: boolean;
             }>;
-            requestEmailChangeEmailOTP: import("better-auth").StrictEndpoint<"/email-otp/request-email-change", {
+            requestEmailChangeEmailOTP: import("better-call").StrictEndpoint<"/email-otp/request-email-change", {
                 method: "POST";
                 body: import("zod").ZodObject<{
                     newEmail: import("zod").ZodString;
                     otp: import("zod").ZodOptional<import("zod").ZodString>;
                 }, import("better-auth").$strip>;
-                use: ((inputContext: import("better-auth").MiddlewareInputContext<import("better-auth").MiddlewareOptions>) => Promise<{
+                use: ((inputContext: import("better-call").MiddlewareInputContext<import("better-call").MiddlewareOptions>) => Promise<{
                     session: {
                         session: Record<string, any> & {
                             id: string;
@@ -498,13 +498,13 @@ export declare const auth: import("better-auth").Auth<{
             }, {
                 success: boolean;
             }>;
-            changeEmailEmailOTP: import("better-auth").StrictEndpoint<"/email-otp/change-email", {
+            changeEmailEmailOTP: import("better-call").StrictEndpoint<"/email-otp/change-email", {
                 method: "POST";
                 body: import("zod").ZodObject<{
                     newEmail: import("zod").ZodString;
                     otp: import("zod").ZodString;
                 }, import("better-auth").$strip>;
-                use: ((inputContext: import("better-auth").MiddlewareInputContext<import("better-auth").MiddlewareOptions>) => Promise<{
+                use: ((inputContext: import("better-call").MiddlewareInputContext<import("better-call").MiddlewareOptions>) => Promise<{
                     session: {
                         session: Record<string, any> & {
                             id: string;
@@ -557,7 +557,7 @@ export declare const auth: import("better-auth").Auth<{
         hooks: {
             after: {
                 matcher(context: import("better-auth").HookEndpointContext): boolean;
-                handler: (inputContext: import("better-auth").MiddlewareInputContext<import("better-auth").MiddlewareOptions>) => Promise<void>;
+                handler: (inputContext: import("better-call").MiddlewareInputContext<import("better-call").MiddlewareOptions>) => Promise<void>;
             }[];
         };
         rateLimit: ({

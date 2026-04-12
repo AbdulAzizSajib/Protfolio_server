@@ -23,6 +23,7 @@ import { globalErrorHandler } from "./middleware/globalErrorHandler";
 import { notFoundMiddleware } from "./middleware/notFound";
 import { envVars } from "./config/env";
 import { auth } from "./lib/auth";
+import { prisma } from "./lib/prisma";
 
 const app: Express = express();
 
@@ -71,6 +72,32 @@ app.use("/api/v1/certifications", certificationRouter);
 app.use("/api/v1/testimonials", testimonialRouter);
 app.use("/api/v1/contact-messages", contactMessageRouter);
 app.use("/api/v1/page-views", pageViewRouter);
+
+// temporary db test - raw pg pool (bypasses Prisma)
+app.get("/db-test", async (req, res) => {
+  const { Pool } = await import("pg");
+  const testPool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: { rejectUnauthorized: false },
+    connectionTimeoutMillis: 30000,
+  });
+  try {
+    const client = await testPool.connect();
+    const result = await client.query("SELECT 1 as test");
+    client.release();
+    await testPool.end();
+    res.json({ success: true, message: "DB query works!", result: result.rows });
+  } catch (error: any) {
+    console.error("DB Test Error:", error);
+    res.status(500).json({
+      success: false,
+      error: error.message,
+      code: error.code,
+      name: error.name,
+      fullError: String(error),
+    });
+  }
+});
 
 app.use(globalErrorHandler);
 app.use(notFoundMiddleware);

@@ -25,10 +25,7 @@ export const globalErrorHandler = async (
   res: Response,
   next: NextFunction,
 ) => {
-  //   console.error("Global error handler:", err);
-  if (envVars.NODE_ENV === "development") {
-    console.error("Error from Global Error Handler:", err);
-  }
+  console.error("Error from Global Error Handler:", err);
 
   // Cleanup uploaded files from Cloudinary if error occurs
   await deleteUploadedFilesFromGlobalErrorHandler(req);

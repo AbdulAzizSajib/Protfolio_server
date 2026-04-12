@@ -2,7 +2,7 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/app/server.js",
   "scripts": {
     "dev": "tsx watch src/app/server.ts",
     "build": "prisma generate && tsc && node scripts/fix-imports.js",
