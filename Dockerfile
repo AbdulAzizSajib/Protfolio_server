@@ -1,0 +1,30 @@
+FROM node:22-slim AS base
+
+WORKDIR /app
+
+FROM base AS deps
+
+COPY package.json package-lock.json ./
+RUN npm ci
+
+FROM deps AS build
+
+COPY tsconfig.json ./
+COPY prisma ./prisma
+COPY scripts ./scripts
+COPY src ./src
+RUN npm run build
+
+FROM base AS runtime
+
+ENV NODE_ENV=production
+
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev && npm cache clean --force
+
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/prisma ./prisma
+
+EXPOSE 5000
+
+CMD ["npm", "start"]
