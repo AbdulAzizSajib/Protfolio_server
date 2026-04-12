@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { Role } from "../../../generated/prisma/enums";
-import { checkAuth } from "../../middleware/checkAuth";
-import { validateRequest } from "../../middleware/validateRequest";
-import { educationController } from "./education.controller";
-import { EducationValidation } from "./education.validation";
+import { Role } from "../../../generated/prisma/enums.js";
+import { checkAuth } from "../../middleware/checkAuth.js";
+import { validateRequest } from "../../middleware/validateRequest.js";
+import { educationController } from "./education.controller.js";
+import { EducationValidation } from "./education.validation.js";
 const educationRouter = Router();
 educationRouter.get("/", educationController.getAllEducations);
 educationRouter.get("/:id", educationController.getEducationById);

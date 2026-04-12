@@ -1,7 +1,7 @@
-import { CookieUtils } from "../utils/cookie";
-import AppError from "../errorHelpers/AppError";
+import { CookieUtils } from "../utils/cookie.js";
+import AppError from "../errorHelpers/AppError.js";
 import status from "http-status";
-import { prisma } from "../lib/prisma";
+import { prisma } from "../lib/prisma.js";
 export const checkAuth = (...authRoles) => async (req, res, next) => {
     try {
         const sessionToken = CookieUtils.getCookie(req, "better-auth.session_token");

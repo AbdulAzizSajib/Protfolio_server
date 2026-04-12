@@ -1,10 +1,10 @@
 import status from "http-status";
-import AppError from "../../errorHelpers/AppError";
-import { auth } from "../../lib/auth";
-import { prisma } from "../../lib/prisma";
-import { tokenUtils } from "../../utils/token";
-import { jwtUtils } from "../../utils/jwt";
-import { envVars } from "../../config/env";
+import AppError from "../../errorHelpers/AppError.js";
+import { auth } from "../../lib/auth.js";
+import { prisma } from "../../lib/prisma.js";
+import { tokenUtils } from "../../utils/token.js";
+import { jwtUtils } from "../../utils/jwt.js";
+import { envVars } from "../../config/env.js";
 const registerUser = async (payload) => {
     const { name, email, password } = payload;
     const data = await auth.api.signUpEmail({

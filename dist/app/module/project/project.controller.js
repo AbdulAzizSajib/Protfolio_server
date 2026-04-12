@@ -1,7 +1,7 @@
 import status from "http-status";
-import { catchAsync } from "../../shared/catchAsync";
-import { sendResponse } from "../../shared/sendResponse";
-import { projectService } from "./project.service";
+import { catchAsync } from "../../shared/catchAsync.js";
+import { sendResponse } from "../../shared/sendResponse.js";
+import { projectService } from "./project.service.js";
 const getAllProjects = catchAsync(async (req, res) => {
     const result = await projectService.getAllProjects(req.query);
     sendResponse(res, { httpStatusCode: status.OK, success: true, message: "Projects retrieved successfully", data: result.data, meta: result.meta });

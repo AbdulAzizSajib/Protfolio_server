@@ -1,8 +1,56 @@
 import { Request, Response } from "express";
+import geoip from "geoip-lite";
 import status from "http-status";
 import { catchAsync } from "../../shared/catchAsync";
 import { sendResponse } from "../../shared/sendResponse";
 import { pageViewService } from "./pageView.service";
+
+const getCountryFromHeaders = (req: Request): string | null => {
+  const headerCandidates = [
+    req.get("cf-ipcountry"),
+    req.get("x-vercel-ip-country"),
+    req.get("x-country-code"),
+  ];
+
+  for (const value of headerCandidates) {
+    if (!value) continue;
+    const country = value.trim().toUpperCase();
+    if (!country || country === "XX" || country === "T1") continue;
+    if (/^[A-Z]{2}$/.test(country)) return country;
+  }
+
+  return null;
+};
+
+const getClientIp = (req: Request): string | null => {
+  const forwardedFor = req.headers["x-forwarded-for"];
+  const realIp = req.headers["x-real-ip"];
+
+  let rawIp: string | undefined;
+
+  if (typeof forwardedFor === "string" && forwardedFor.trim()) {
+    rawIp = forwardedFor.split(",")[0]?.trim();
+  } else if (Array.isArray(forwardedFor) && forwardedFor.length > 0) {
+    rawIp = forwardedFor[0]?.trim();
+  } else if (typeof realIp === "string" && realIp.trim()) {
+    rawIp = realIp.trim();
+  } else if (req.ip) {
+    rawIp = req.ip;
+  }
+
+  if (!rawIp) return null;
+  if (rawIp.startsWith("::ffff:")) return rawIp.replace("::ffff:", "");
+  if (rawIp === "::1") return "127.0.0.1";
+
+  return rawIp;
+};
+
+const getCountryFromIp = (ip: string | null): string | null => {
+  if (!ip) return null;
+
+  const lookup = geoip.lookup(ip);
+  return lookup?.country ?? null;
+};
 
 const getAllPageViews = catchAsync(async (req: Request, res: Response) => {
   const result = await pageViewService.getAllPageViews(req.query as Record<string, unknown>);
@@ -13,8 +61,25 @@ const getPageViewById = catchAsync(async (req: Request, res: Response) => {
   const result = await pageViewService.getPageViewById(id);
   sendResponse(res, { httpStatusCode: status.OK, success: true, message: "Page view retrieved successfully", data: result });
 });
+
+const getPageViewsSummary = catchAsync(async (req: Request, res: Response) => {
+  const result = await pageViewService.getPageViewsSummary(req.query as Record<string, unknown>);
+  sendResponse(res, { httpStatusCode: status.OK, success: true, message: "Page view summary retrieved successfully", data: result });
+});
+
 const createPageView = catchAsync(async (req: Request, res: Response) => {
-  const result = await pageViewService.createPageView(req.body);
+  const clientIp = getClientIp(req);
+  const country = getCountryFromHeaders(req) ?? getCountryFromIp(clientIp);
+  const body = req.body as Record<string, unknown>;
+
+  const result = await pageViewService.createPageView({
+    ...body,
+    ip: clientIp,
+    country,
+    userAgent: typeof body.userAgent === "string" ? body.userAgent : req.get("user-agent"),
+    referrer: typeof body.referrer === "string" ? body.referrer : req.get("referer"),
+  });
+
   sendResponse(res, { httpStatusCode: status.CREATED, success: true, message: "Page view created successfully", data: result });
 });
 const deletePageView = catchAsync(async (req: Request, res: Response) => {
@@ -23,4 +88,10 @@ const deletePageView = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, { httpStatusCode: status.OK, success: true, message: "Page view deleted successfully", data: result });
 });
 
-export const pageViewController = { getAllPageViews, getPageViewById, createPageView, deletePageView };
+export const pageViewController = {
+  getAllPageViews,
+  getPageViewById,
+  getPageViewsSummary,
+  createPageView,
+  deletePageView,
+};

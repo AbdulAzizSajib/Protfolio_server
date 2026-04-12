@@ -1,11 +1,11 @@
-import { envVars } from "../config/env";
-import { handleZodError } from "../errorHelpers/handleZodError";
+import { envVars } from "../config/env.js";
+import { handleZodError } from "../errorHelpers/handleZodError.js";
 import z from "zod";
 import status from "http-status";
-import AppError from "../errorHelpers/AppError";
-import { deleteUploadedFilesFromGlobalErrorHandler } from "../utils/deleteUploadedFilesFromGlobalErrorHandler";
-import { Prisma } from "../../generated/prisma/client";
-import { handlePrismaClientKnownRequestError, handlePrismaClientUnknownError, handlePrismaClientValidationError, handlerPrismaClientInitializationError, handlerPrismaClientRustPanicError, } from "../errorHelpers/handlePrismaErrors";
+import AppError from "../errorHelpers/AppError.js";
+import { deleteUploadedFilesFromGlobalErrorHandler } from "../utils/deleteUploadedFilesFromGlobalErrorHandler.js";
+import { Prisma } from "../../generated/prisma/client.js";
+import { handlePrismaClientKnownRequestError, handlePrismaClientUnknownError, handlePrismaClientValidationError, handlerPrismaClientInitializationError, handlerPrismaClientRustPanicError, } from "../errorHelpers/handlePrismaErrors.js";
 //  global error handler
 export const globalErrorHandler = async (err, req, res, next) => {
     //   console.error("Global error handler:", err);

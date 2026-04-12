@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { Role } from "../../../generated/prisma/enums";
-import { checkAuth } from "../../middleware/checkAuth";
-import { validateRequest } from "../../middleware/validateRequest";
-import { skillController } from "./skill.controller";
-import { SkillValidation } from "./skill.validation";
+import { Role } from "../../../generated/prisma/enums.js";
+import { checkAuth } from "../../middleware/checkAuth.js";
+import { validateRequest } from "../../middleware/validateRequest.js";
+import { skillController } from "./skill.controller.js";
+import { SkillValidation } from "./skill.validation.js";
 const skillRouter = Router();
 skillRouter.get("/", skillController.getAllSkills);
 skillRouter.get("/:id", skillController.getSkillById);

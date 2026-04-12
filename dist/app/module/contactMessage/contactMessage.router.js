@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { Role } from "../../../generated/prisma/enums";
-import { checkAuth } from "../../middleware/checkAuth";
-import { validateRequest } from "../../middleware/validateRequest";
-import { contactMessageController } from "./contactMessage.controller";
-import { ContactMessageValidation } from "./contactMessage.validation";
+import { Role } from "../../../generated/prisma/enums.js";
+import { checkAuth } from "../../middleware/checkAuth.js";
+import { validateRequest } from "../../middleware/validateRequest.js";
+import { contactMessageController } from "./contactMessage.controller.js";
+import { ContactMessageValidation } from "./contactMessage.validation.js";
 const contactMessageRouter = Router();
 contactMessageRouter.post("/", validateRequest(ContactMessageValidation.createContactMessageZodSchema), contactMessageController.createContactMessage);
 contactMessageRouter.get("/", checkAuth(Role.ADMIN, Role.OWNER), contactMessageController.getAllContactMessages);

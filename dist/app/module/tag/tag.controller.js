@@ -1,7 +1,7 @@
 import status from "http-status";
-import { catchAsync } from "../../shared/catchAsync";
-import { sendResponse } from "../../shared/sendResponse";
-import { tagService } from "./tag.service";
+import { catchAsync } from "../../shared/catchAsync.js";
+import { sendResponse } from "../../shared/sendResponse.js";
+import { tagService } from "./tag.service.js";
 const getAllTags = catchAsync(async (req, res) => {
     const result = await tagService.getAllTags(req.query);
     sendResponse(res, { httpStatusCode: status.OK, success: true, message: "Tags retrieved successfully", data: result.data, meta: result.meta });

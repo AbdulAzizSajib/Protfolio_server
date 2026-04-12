@@ -1,7 +1,7 @@
 import status from "http-status";
-import { catchAsync } from "../../shared/catchAsync";
-import { sendResponse } from "../../shared/sendResponse";
-import { educationService } from "./education.service";
+import { catchAsync } from "../../shared/catchAsync.js";
+import { sendResponse } from "../../shared/sendResponse.js";
+import { educationService } from "./education.service.js";
 const getAllEducations = catchAsync(async (req, res) => {
     const result = await educationService.getAllEducations(req.query);
     sendResponse(res, { httpStatusCode: status.OK, success: true, message: "Educations retrieved successfully", data: result.data, meta: result.meta });

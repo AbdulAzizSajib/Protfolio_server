@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { userController } from "./user.controller";
-import { validateRequest } from "../../middleware/validateRequest";
-import { UserValidation } from "./user.validation";
-import { checkAuth } from "../../middleware/checkAuth";
-import { Role } from "../../../generated/prisma/enums";
-import { multerUpload } from "../../config/multer.config";
+import { userController } from "./user.controller.js";
+import { validateRequest } from "../../middleware/validateRequest.js";
+import { UserValidation } from "./user.validation.js";
+import { checkAuth } from "../../middleware/checkAuth.js";
+import { Role } from "../../../generated/prisma/enums.js";
+import { multerUpload } from "../../config/multer.config.js";
 const userRouter = Router();
 // Dashboard
 userRouter.get("/dashboard", checkAuth(Role.ADMIN, Role.OWNER), userController.getMyDashboard);

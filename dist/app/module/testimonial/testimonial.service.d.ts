@@ -7,10 +7,10 @@ export declare const testimonialService: {
                 updatedAt: Date;
                 status: import("../../../generated/prisma/enums").ProjectStatus;
                 featured: boolean;
+                title: string;
+                description: string;
                 sortOrder: number;
                 slug: string;
-                description: string;
-                title: string;
                 content: string | null;
                 coverImage: string | null;
                 liveUrl: string | null;
@@ -47,10 +47,10 @@ export declare const testimonialService: {
             updatedAt: Date;
             status: import("../../../generated/prisma/enums").ProjectStatus;
             featured: boolean;
+            title: string;
+            description: string;
             sortOrder: number;
             slug: string;
-            description: string;
-            title: string;
             content: string | null;
             coverImage: string | null;
             liveUrl: string | null;

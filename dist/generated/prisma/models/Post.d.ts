@@ -477,13 +477,6 @@ export type PostScalarRelationFilter = {
     is?: Prisma.PostWhereInput;
     isNot?: Prisma.PostWhereInput;
 };
-export type NullableIntFieldUpdateOperationsInput = {
-    set?: number | null;
-    increment?: number;
-    decrement?: number;
-    multiply?: number;
-    divide?: number;
-};
 export type PostCreateNestedOneWithoutTagsInput = {
     create?: Prisma.XOR<Prisma.PostCreateWithoutTagsInput, Prisma.PostUncheckedCreateWithoutTagsInput>;
     connectOrCreate?: Prisma.PostCreateOrConnectWithoutTagsInput;

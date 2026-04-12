@@ -1,7 +1,7 @@
 import status from "http-status";
-import { catchAsync } from "../../shared/catchAsync";
-import { sendResponse } from "../../shared/sendResponse";
-import { experienceService } from "./experience.service";
+import { catchAsync } from "../../shared/catchAsync.js";
+import { sendResponse } from "../../shared/sendResponse.js";
+import { experienceService } from "./experience.service.js";
 const getAllExperiences = catchAsync(async (req, res) => {
     const result = await experienceService.getAllExperiences(req.query);
     sendResponse(res, { httpStatusCode: status.OK, success: true, message: "Experiences retrieved successfully", data: result.data, meta: result.meta });

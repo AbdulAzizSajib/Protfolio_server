@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { Role } from "../../../generated/prisma/enums";
-import { checkAuth } from "../../middleware/checkAuth";
-import { validateRequest } from "../../middleware/validateRequest";
-import { tagController } from "./tag.controller";
-import { TagValidation } from "./tag.validation";
+import { Role } from "../../../generated/prisma/enums.js";
+import { checkAuth } from "../../middleware/checkAuth.js";
+import { validateRequest } from "../../middleware/validateRequest.js";
+import { tagController } from "./tag.controller.js";
+import { TagValidation } from "./tag.validation.js";
 const tagRouter = Router();
 tagRouter.get("/", tagController.getAllTags);
 tagRouter.get("/:id", tagController.getTagById);

@@ -1,7 +1,7 @@
 import { createServer } from "node:http";
-import app from "./app";
-import { envVars } from "./config/env";
-import { prisma } from "./lib/prisma";
+import app from "./app.js";
+import { envVars } from "./config/env.js";
+import { prisma } from "./lib/prisma.js";
 let server;
 async function main() {
     try {

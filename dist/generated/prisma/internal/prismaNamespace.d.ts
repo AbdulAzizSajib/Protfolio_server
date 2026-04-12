@@ -236,6 +236,7 @@ export declare const ModelName: {
     readonly Account: "Account";
     readonly Verification: "Verification";
     readonly Profile: "Profile";
+    readonly About: "About";
     readonly Project: "Project";
     readonly ProjectImage: "ProjectImage";
     readonly Category: "Category";
@@ -263,7 +264,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         omit: GlobalOmitOptions;
     };
     meta: {
-        modelProps: "user" | "session" | "account" | "verification" | "profile" | "project" | "projectImage" | "category" | "tag" | "projectTag" | "skill" | "projectSkill" | "experience" | "education" | "certification" | "post" | "postTag" | "testimonial" | "contactMessage" | "pageView";
+        modelProps: "user" | "session" | "account" | "verification" | "profile" | "about" | "project" | "projectImage" | "category" | "tag" | "projectTag" | "skill" | "projectSkill" | "experience" | "education" | "certification" | "post" | "postTag" | "testimonial" | "contactMessage" | "pageView";
         txIsolationLevel: TransactionIsolationLevel;
     };
     model: {
@@ -634,6 +635,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
                 count: {
                     args: Prisma.ProfileCountArgs<ExtArgs>;
                     result: runtime.Types.Utils.Optional<Prisma.ProfileCountAggregateOutputType> | number;
+                };
+            };
+        };
+        About: {
+            payload: Prisma.$AboutPayload<ExtArgs>;
+            fields: Prisma.AboutFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.AboutFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AboutPayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.AboutFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AboutPayload>;
+                };
+                findFirst: {
+                    args: Prisma.AboutFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AboutPayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.AboutFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AboutPayload>;
+                };
+                findMany: {
+                    args: Prisma.AboutFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AboutPayload>[];
+                };
+                create: {
+                    args: Prisma.AboutCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AboutPayload>;
+                };
+                createMany: {
+                    args: Prisma.AboutCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.AboutCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AboutPayload>[];
+                };
+                delete: {
+                    args: Prisma.AboutDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AboutPayload>;
+                };
+                update: {
+                    args: Prisma.AboutUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AboutPayload>;
+                };
+                deleteMany: {
+                    args: Prisma.AboutDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.AboutUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.AboutUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AboutPayload>[];
+                };
+                upsert: {
+                    args: Prisma.AboutUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$AboutPayload>;
+                };
+                aggregate: {
+                    args: Prisma.AboutAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateAbout>;
+                };
+                groupBy: {
+                    args: Prisma.AboutGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AboutGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.AboutCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AboutCountAggregateOutputType> | number;
                 };
             };
         };
@@ -1850,6 +1925,21 @@ export declare const ProfileScalarFieldEnum: {
     readonly metaDescription: "metaDescription";
 };
 export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeof ProfileScalarFieldEnum];
+export declare const AboutScalarFieldEnum: {
+    readonly id: "id";
+    readonly key: "key";
+    readonly title: "title";
+    readonly subtitle: "subtitle";
+    readonly description: "description";
+    readonly yearsOfExperience: "yearsOfExperience";
+    readonly projectsCompleted: "projectsCompleted";
+    readonly clientsWorkedWith: "clientsWorkedWith";
+    readonly imageUrl: "imageUrl";
+    readonly resumeUrl: "resumeUrl";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type AboutScalarFieldEnum = (typeof AboutScalarFieldEnum)[keyof typeof AboutScalarFieldEnum];
 export declare const ProjectScalarFieldEnum: {
     readonly id: "id";
     readonly title: "title";
@@ -2007,6 +2097,8 @@ export declare const PageViewScalarFieldEnum: {
     readonly userAgent: "userAgent";
     readonly ip: "ip";
     readonly country: "country";
+    readonly eventType: "eventType";
+    readonly section: "section";
     readonly createdAt: "createdAt";
 };
 export type PageViewScalarFieldEnum = (typeof PageViewScalarFieldEnum)[keyof typeof PageViewScalarFieldEnum];
@@ -2057,13 +2149,13 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  */
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>;
 /**
- * Reference to a field of type 'ProjectStatus'
+ * Reference to a field of type 'Float'
  */
-export type EnumProjectStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProjectStatus'>;
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>;
 /**
- * Reference to a field of type 'ProjectStatus[]'
+ * Reference to a field of type 'Float[]'
  */
-export type ListEnumProjectStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProjectStatus[]'>;
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>;
 /**
  * Reference to a field of type 'Int'
  */
@@ -2072,6 +2164,14 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>;
+/**
+ * Reference to a field of type 'ProjectStatus'
+ */
+export type EnumProjectStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProjectStatus'>;
+/**
+ * Reference to a field of type 'ProjectStatus[]'
+ */
+export type ListEnumProjectStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProjectStatus[]'>;
 /**
  * Reference to a field of type 'SkillGroup'
  */
@@ -2096,14 +2196,6 @@ export type EnumMessageStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pr
  * Reference to a field of type 'MessageStatus[]'
  */
 export type ListEnumMessageStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MessageStatus[]'>;
-/**
- * Reference to a field of type 'Float'
- */
-export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>;
-/**
- * Reference to a field of type 'Float[]'
- */
-export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>;
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -2203,6 +2295,7 @@ export type GlobalOmitConfig = {
     account?: Prisma.AccountOmit;
     verification?: Prisma.VerificationOmit;
     profile?: Prisma.ProfileOmit;
+    about?: Prisma.AboutOmit;
     project?: Prisma.ProjectOmit;
     projectImage?: Prisma.ProjectImageOmit;
     category?: Prisma.CategoryOmit;

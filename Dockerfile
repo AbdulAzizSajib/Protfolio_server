@@ -1,28 +1,30 @@
-FROM node:22-slim AS builder
+FROM node:22-slim AS base
 
 WORKDIR /app
 
-# Install dependencies with pnpm lockfile for reproducible builds
-COPY package.json pnpm-lock.yaml ./
-RUN corepack enable && pnpm install --frozen-lockfile
+FROM base AS deps
 
-# Copy the full project for runtime
-COPY . .
-RUN pnpm exec prisma generate
+COPY package.json package-lock.json ./
+RUN npm ci
 
-FROM node:22-slim AS runner
+FROM deps AS build
 
-WORKDIR /app
+COPY tsconfig.json ./
+COPY prisma ./prisma
+COPY scripts ./scripts
+COPY src ./src
+RUN npm run build
+
+FROM base AS runtime
+
 ENV NODE_ENV=production
 
-# Copy app source and installed dependencies
-COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/src ./src
-COPY --from=builder /app/prisma ./prisma
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev && npm cache clean --force
 
-# Your app reads PORT from env; default can be overridden at runtime
-ENV PORT=5000
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/prisma ./prisma
+
 EXPOSE 5000
 
-CMD ["./node_modules/.bin/tsx", "src/app/server.ts"]
+CMD ["npm", "start"]

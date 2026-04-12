@@ -1,7 +1,7 @@
 import status from "http-status";
-import AppError from "../../errorHelpers/AppError";
-import { deleteFileFromCloudinary, uploadFileToCloudinary } from "../../config/cloudinary.config";
-import { prisma } from "../../lib/prisma";
+import AppError from "../../errorHelpers/AppError.js";
+import { deleteFileFromCloudinary, uploadFileToCloudinary } from "../../config/cloudinary.config.js";
+import { prisma } from "../../lib/prisma.js";
 const getPublicProfile = async () => {
     const profile = await prisma.profile.findFirst({
         include: {

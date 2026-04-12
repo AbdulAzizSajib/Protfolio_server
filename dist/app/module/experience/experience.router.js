@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { Role } from "../../../generated/prisma/enums";
-import { checkAuth } from "../../middleware/checkAuth";
-import { validateRequest } from "../../middleware/validateRequest";
-import { experienceController } from "./experience.controller";
-import { ExperienceValidation } from "./experience.validation";
+import { Role } from "../../../generated/prisma/enums.js";
+import { checkAuth } from "../../middleware/checkAuth.js";
+import { validateRequest } from "../../middleware/validateRequest.js";
+import { experienceController } from "./experience.controller.js";
+import { ExperienceValidation } from "./experience.validation.js";
 const experienceRouter = Router();
 experienceRouter.get("/", experienceController.getAllExperiences);
 experienceRouter.get("/:id", experienceController.getExperienceById);

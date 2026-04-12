@@ -1,8 +1,8 @@
 import status from "http-status";
-import AppError from "../../errorHelpers/AppError";
-import { auth } from "../../lib/auth";
-import { prisma } from "../../lib/prisma";
-import { deleteFileFromCloudinary, uploadFileToCloudinary, } from "../../config/cloudinary.config";
+import AppError from "../../errorHelpers/AppError.js";
+import { auth } from "../../lib/auth.js";
+import { prisma } from "../../lib/prisma.js";
+import { deleteFileFromCloudinary, uploadFileToCloudinary, } from "../../config/cloudinary.config.js";
 const createAdmin = async (payload) => {
     const userExists = await prisma.user.findUnique({
         where: {

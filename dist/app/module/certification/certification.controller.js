@@ -1,7 +1,7 @@
 import status from "http-status";
-import { catchAsync } from "../../shared/catchAsync";
-import { sendResponse } from "../../shared/sendResponse";
-import { certificationService } from "./certification.service";
+import { catchAsync } from "../../shared/catchAsync.js";
+import { sendResponse } from "../../shared/sendResponse.js";
+import { certificationService } from "./certification.service.js";
 const getAllCertifications = catchAsync(async (req, res) => {
     const result = await certificationService.getAllCertifications(req.query);
     sendResponse(res, { httpStatusCode: status.OK, success: true, message: "Certifications retrieved successfully", data: result.data, meta: result.meta });

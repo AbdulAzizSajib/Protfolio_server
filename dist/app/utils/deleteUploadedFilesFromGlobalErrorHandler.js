@@ -1,4 +1,4 @@
-import { deleteFileFromCloudinary } from "../config/cloudinary.config";
+import { deleteFileFromCloudinary } from "../config/cloudinary.config.js";
 /**
  * Cleans up uploaded files from Cloudinary when an error occurs.
  *

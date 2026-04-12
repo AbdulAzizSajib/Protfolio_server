@@ -1,7 +1,7 @@
 import status from "http-status";
-import AppError from "../../errorHelpers/AppError";
-import { prisma } from "../../lib/prisma";
-import { getPaginationOptions } from "../../utils/pagination";
+import AppError from "../../errorHelpers/AppError.js";
+import { prisma } from "../../lib/prisma.js";
+import { getPaginationOptions } from "../../utils/pagination.js";
 const getAllTestimonials = async (query) => {
     const { page, limit, skip, sortBy, sortOrder, searchTerm } = getPaginationOptions(query);
     const featured = query.featured === "true" ? true : query.featured === "false" ? false : undefined;

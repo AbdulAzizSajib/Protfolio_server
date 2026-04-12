@@ -121,6 +121,27 @@ model Profile {
 }
 
 // ================================
+// ABOUT
+// ================================
+
+model About {
+  id                String   @id @default(cuid())
+  key               String   @unique @default("main")
+  title             String?
+  subtitle          String?
+  description       String?  @db.Text
+  yearsOfExperience Float?
+  projectsCompleted Int?
+  clientsWorkedWith Int?
+  imageUrl          String?
+  resumeUrl         String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("about")
+}
+
+// ================================
 // PROJECTS
 // ================================
 
@@ -404,6 +425,8 @@ model PageView {
   userAgent String?
   ip        String?
   country   String?
+  eventType String   @default("page_view")
+  section   String?
   createdAt DateTime @default(now())
 
   @@map("page_views")

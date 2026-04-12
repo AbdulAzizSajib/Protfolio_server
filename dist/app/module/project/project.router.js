@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { Role } from "../../../generated/prisma/enums";
-import { checkAuth } from "../../middleware/checkAuth";
-import { validateRequest } from "../../middleware/validateRequest";
-import { projectController } from "./project.controller";
-import { ProjectValidation } from "./project.validation";
+import { Role } from "../../../generated/prisma/enums.js";
+import { checkAuth } from "../../middleware/checkAuth.js";
+import { validateRequest } from "../../middleware/validateRequest.js";
+import { projectController } from "./project.controller.js";
+import { ProjectValidation } from "./project.validation.js";
 const projectRouter = Router();
 projectRouter.get("/", projectController.getAllProjects);
 projectRouter.get("/:id", projectController.getProjectById);

@@ -1,12 +1,12 @@
-import { catchAsync } from "../../shared/catchAsync";
-import { authService } from "./auth.service";
-import { sendResponse } from "../../shared/sendResponse";
+import { catchAsync } from "../../shared/catchAsync.js";
+import { authService } from "./auth.service.js";
+import { sendResponse } from "../../shared/sendResponse.js";
 import status from "http-status";
-import { tokenUtils } from "../../utils/token";
-import AppError from "../../errorHelpers/AppError";
-import { CookieUtils } from "../../utils/cookie";
-import { envVars } from "../../config/env";
-import { auth } from "../../lib/auth";
+import { tokenUtils } from "../../utils/token.js";
+import AppError from "../../errorHelpers/AppError.js";
+import { CookieUtils } from "../../utils/cookie.js";
+import { envVars } from "../../config/env.js";
+import { auth } from "../../lib/auth.js";
 const registerUser = catchAsync(async (req, res) => {
     const payload = req.body;
     const result = await authService.registerUser(payload);

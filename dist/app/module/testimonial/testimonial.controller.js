@@ -1,7 +1,7 @@
 import status from "http-status";
-import { catchAsync } from "../../shared/catchAsync";
-import { sendResponse } from "../../shared/sendResponse";
-import { testimonialService } from "./testimonial.service";
+import { catchAsync } from "../../shared/catchAsync.js";
+import { sendResponse } from "../../shared/sendResponse.js";
+import { testimonialService } from "./testimonial.service.js";
 const getAllTestimonials = catchAsync(async (req, res) => {
     const result = await testimonialService.getAllTestimonials(req.query);
     sendResponse(res, { httpStatusCode: status.OK, success: true, message: "Testimonials retrieved successfully", data: result.data, meta: result.meta });
