@@ -14,6 +14,8 @@ const getPublicAbout = async () => {
   return about;
 };
 
+// hello world
+
 const upsertAbout = async (payload: Record<string, unknown>) => {
   const about = await prisma.about.upsert({
     where: { key: ABOUT_KEY },
