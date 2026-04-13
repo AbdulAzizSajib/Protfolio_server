@@ -27,6 +27,29 @@ import { prisma } from "./lib/prisma";
 
 const app: Express = express();
 
+const STATIC_ALLOWED_ORIGINS = [
+  envVars.FRONTEND_URL,
+  envVars.BETTER_AUTH_URL,
+  "https://abdulazizsajib.vercel.app",
+  "http://localhost:3000",
+  "http://localhost:5000",
+];
+
+const normalizeOrigin = (origin: string): string => origin.replace(/\/$/, "");
+
+const allowedOrigins = new Set(
+  STATIC_ALLOWED_ORIGINS.filter(Boolean).map((origin) => normalizeOrigin(origin)),
+);
+
+const isVercelPreviewOrigin = (origin: string): boolean => {
+  try {
+    const { hostname } = new URL(origin);
+    return hostname.endsWith(".vercel.app");
+  } catch {
+    return false;
+  }
+};
+
 app.set("trust proxy", true);
 
 app.set("view engine", "ejs");
@@ -34,14 +57,24 @@ app.set("views", path.resolve(process.cwd(), `src/app/templates`));
 
 app.use(
   cors({
-    origin: [
-      envVars.FRONTEND_URL,
-      envVars.BETTER_AUTH_URL,
-      "http://localhost:3000",
-      "http://localhost:5000",
-    ],
+    origin: (origin, callback) => {
+      // Allow requests without origin (e.g., curl/Postman/server-to-server).
+      if (!origin) {
+        callback(null, true);
+        return;
+      }
+
+      const normalizedOrigin = normalizeOrigin(origin);
+
+      if (allowedOrigins.has(normalizedOrigin) || isVercelPreviewOrigin(normalizedOrigin)) {
+        callback(null, true);
+        return;
+      }
+
+      callback(new Error("Not allowed by CORS"));
+    },
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
