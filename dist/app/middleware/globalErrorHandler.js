@@ -8,7 +8,10 @@ import { Prisma } from "../../generated/prisma/client.js";
 import { handlePrismaClientKnownRequestError, handlePrismaClientUnknownError, handlePrismaClientValidationError, handlerPrismaClientInitializationError, handlerPrismaClientRustPanicError, } from "../errorHelpers/handlePrismaErrors.js";
 //  global error handler
 export const globalErrorHandler = async (err, req, res, next) => {
-    console.error("Error from Global Error Handler:", err);
+    //   console.error("Global error handler:", err);
+    if (envVars.NODE_ENV === "development") {
+        console.error("Error from Global Error Handler:", err);
+    }
     // Cleanup uploaded files from Cloudinary if error occurs
     await deleteUploadedFilesFromGlobalErrorHandler(req);
     // handle different types of errors and send appropriate response

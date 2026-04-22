@@ -21,6 +21,7 @@ import { globalErrorHandler } from "./middleware/globalErrorHandler.js";
 import { notFoundMiddleware } from "./middleware/notFound.js";
 import { envVars } from "./config/env.js";
 import { auth } from "./lib/auth.js";
+import { prisma } from "./lib/prisma.js";
 const app = express();
 app.set("trust proxy", true);
 app.set("view engine", "ejs");
@@ -59,30 +60,15 @@ app.use("/api/v1/certifications", certificationRouter);
 app.use("/api/v1/testimonials", testimonialRouter);
 app.use("/api/v1/contact-messages", contactMessageRouter);
 app.use("/api/v1/page-views", pageViewRouter);
-// temporary db test - raw pg pool (bypasses Prisma)
+// temporary db test
 app.get("/db-test", async (req, res) => {
-    const { Pool } = await import("pg");
-    const testPool = new Pool({
-        connectionString: process.env.DATABASE_URL,
-        ssl: { rejectUnauthorized: false },
-        connectionTimeoutMillis: 30000,
-    });
     try {
-        const client = await testPool.connect();
-        const result = await client.query("SELECT 1 as test");
-        client.release();
-        await testPool.end();
-        res.json({ success: true, message: "DB query works!", result: result.rows });
+        await prisma.$connect();
+        res.json({ success: true, message: "Database connected" });
     }
     catch (error) {
-        console.error("DB Test Error:", error);
-        res.status(500).json({
-            success: false,
-            error: error.message,
-            code: error.code,
-            name: error.name,
-            fullError: String(error),
-        });
+        console.error(error);
+        res.status(500).json({ success: false, error: "Database connection failed" });
     }
 });
 app.use(globalErrorHandler);
